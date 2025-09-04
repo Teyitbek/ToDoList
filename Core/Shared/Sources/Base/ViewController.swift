@@ -1,7 +1,7 @@
 import ActivityIndicator
 import Combine
 import KeyboardManager
-import MessageView
+//import MessageView
 import UIKit
 
 open class ViewController<CV: ContentViewRepresentable, VM: ViewModel>: UIViewController {
@@ -79,7 +79,7 @@ open class ViewController<CV: ContentViewRepresentable, VM: ViewModel>: UIViewCo
             .receive(on: DispatchQueue.main)
             .sink { [weak self] error in
                 guard let self else { return }
-                showMessage(type: .error, message: error.localizedDescription)
+//                showMessage(type: .error, message: error.localizedDescription)
             }
             .store(in: &cancellables)
         
@@ -87,7 +87,7 @@ open class ViewController<CV: ContentViewRepresentable, VM: ViewModel>: UIViewCo
             .receive(on: DispatchQueue.main)
             .sink { [weak self] message in
                 guard let self, let message else { return }
-                showMessage(type: .success, message: message)
+//                showMessage(type: .success, message: message)
             }
             .store(in: &cancellables)
         
@@ -106,4 +106,4 @@ open class ViewController<CV: ContentViewRepresentable, VM: ViewModel>: UIViewCo
 
 extension ViewController: ActivityPresentable {}
 
-extension ViewController: MessagePresentable {}
+//extension ViewController: MessagePresentable {}

@@ -8,14 +8,14 @@ public final class AuthCoordinator: BaseCoordinator, AuthCoordinatorResult {
     
     private let router: any Router
     private let factory: AuthenticationFactory
-    private let biometricService: BiometricService
+//    private let biometricService: BiometricService
     private let sessionService: SessionManaging
     public var window: UIWindow!
     
-    public init(router: any Router, factory: AuthenticationFactory, biometricService: BiometricService, sessionService: SessionManaging, window: UIWindow) {
+    public init(router: any Router, factory: AuthenticationFactory, sessionService: SessionManaging, window: UIWindow) {
         self.router = router
         self.factory = factory
-        self.biometricService = biometricService
+//        self.biometricService = biometricService
         self.sessionService = sessionService
         self.window = window
     }

@@ -50,15 +50,15 @@ public final class AppContainer: SharedContainer {
     public var sessionService: Factory<SessionManaging> {
         Factory(self) {
             SessionService(useCases: (
-                    self.saveLocationUseCase(),
-                    self.retrieveLocationUseCase(),
-                    self.deleteLocationUseCase(),
-                    self.saveAccessTokenUseCase(),
-                    self.saveUserUseCase(),
-                    self.retrieveUserUseCase(),
-                    self.retrieveAccessTokenUseCase(),
-                    self.deleteAccessTokenUseCase(),
-                    self.deleteUserUseCase(),
+//                    self.saveLocationUseCase(),
+//                    self.retrieveLocationUseCase(),
+//                    self.deleteLocationUseCase(),
+//                    self.saveAccessTokenUseCase(),
+//                    self.saveUserUseCase(),
+//                    self.retrieveUserUseCase(),
+//                    self.retrieveAccessTokenUseCase(),
+//                    self.deleteAccessTokenUseCase(),
+//                    self.deleteUserUseCase(),
                     self.localSaveDeviceUIDUseCase(),
                     self.localRetrieveDeviceUIDUseCase(),
                     self.localDeleteDeviceUIDUseCase(),
@@ -81,7 +81,7 @@ public final class AppContainer: SharedContainer {
     
     public var appType: Factory<String> {
         Factory(self) {
-            "ios-kiosk"
+            "ios-todolist"
         }.singleton
     }
     
@@ -151,43 +151,43 @@ public final class AppContainer: SharedContainer {
         .singleton
     }
     
-    public var biometricService: Factory<BiometricService> {
-        Factory(self) {
-            DefaultBiometricService()
-        }
-        .singleton
-    }
+//    public var biometricService: Factory<BiometricService> {
+//        Factory(self) {
+//            DefaultBiometricService()
+//        }
+//        .singleton
+//    }
     
-    public var socketService: Factory<SocketServicing> {
-        Factory(self) {
-            SocketService(session: self.sessionService(), socketURL: self.socketURL(), appType: self.appType(), appVersion: self.appVersion(), deviceUID: self.deviceUid())
-        }
-        .singleton
-    }
+//    public var socketService: Factory<SocketServicing> {
+//        Factory(self) {
+//            SocketService(session: self.sessionService(), socketURL: self.socketURL(), appType: self.appType(), appVersion: self.appVersion(), deviceUID: self.deviceUid())
+//        }
+//        .singleton
+//    }
     
-    public var inactivityTimerService: Factory<InactivityTimerService> {
-        Factory(self) {
-            InactivityTimerService(inactivityTimeoutSubject: self.inactivityTimeoutSubject())
-        }
-        .singleton
-    }
+//    public var inactivityTimerService: Factory<InactivityTimerService> {
+//        Factory(self) {
+//            InactivityTimerService(inactivityTimeoutSubject: self.inactivityTimeoutSubject())
+//        }
+//        .singleton
+//    }
     
-    public var terminalService: Factory<TerminalService> {
-        Factory(self) {
-            TerminalService(getDeviceSecretUseCase: self.getRemoteDeviceSecretUseCase(),
-                            saveDeviceSecretUseCase: self.saveDeviceSecretUseCase(),
-                            session: self.sessionService(),
-                            baseURL: self.baseAPIURL())
-        }
-        .singleton
-    }
+//    public var terminalService: Factory<TerminalService> {
+//        Factory(self) {
+//            TerminalService(getDeviceSecretUseCase: self.getRemoteDeviceSecretUseCase(),
+//                            saveDeviceSecretUseCase: self.saveDeviceSecretUseCase(),
+//                            session: self.sessionService(),
+//                            baseURL: self.baseAPIURL())
+//        }
+//        .singleton
+//    }
     
-    public var printerManager: Factory<PrinterManager> {
-        Factory(self) {
-            PrinterManager(session: self.sessionService(), socketService: self.socketService())
-        }
-        .singleton
-    }
+//    public var printerManager: Factory<PrinterManager> {
+//        Factory(self) {
+//            PrinterManager(session: self.sessionService(), socketService: self.socketService())
+//        }
+//        .singleton
+//    }
     
     public var logOutSubject: Factory<PassthroughSubject<Bool, Never>> {
         Factory(self) {
@@ -218,13 +218,13 @@ public final class AppContainer: SharedContainer {
             client.validators.append(ResponseLogValidator())
             client.validators.append(ResponseMessageValidator())
             
-            if let accessToken = self.sessionService().accessToken {
-                client.headers.set(.authBearerToken(accessToken))
-            }
+//            if let accessToken = self.sessionService().accessToken {
+//                client.headers.set(.authBearerToken(accessToken))
+//            }
             
-            if let location = self.sessionService().retrieveLocation() {
-                client.headers.set("locationId", "\(location.id)")
-            }
+//            if let location = self.sessionService().retrieveLocation() {
+//                client.headers.set("locationId", "\(location.id)")
+//            }
             
             if let languageId = self.selectedLanguageSubject().value?.id {
                 client.headers.set("languageId", languageId)
@@ -247,124 +247,124 @@ public final class AppContainer: SharedContainer {
         .singleton
     }
     
-    public var keychainServiceAuth: Factory<any SecureStorage> {
-        Factory(self) {
-            KeychainService(identifier: "com.ToDoList.auth", accessibility: .whenUnlocked)
-        }
-        .singleton
-    }
+//    public var keychainServiceAuth: Factory<any SecureStorage> {
+//        Factory(self) {
+//            KeychainService(identifier: "com.ToDoList.auth", accessibility: .whenUnlocked)
+//        }
+//        .singleton
+//    }
     
-    public var keychainServiceUser: Factory<any SecureStorage> {
-        Factory(self) {
-            KeychainService(identifier: "com.ToDoList.user", accessibility: .whenUnlocked)
-        }
-        .singleton
-    }
+//    public var keychainServiceUser: Factory<any SecureStorage> {
+//        Factory(self) {
+//            KeychainService(identifier: "com.ToDoList.user", accessibility: .whenUnlocked)
+//        }
+//        .singleton
+//    }
     
-    public var saveAccessTokenDataSource: Factory<AccessTokenKeychainDataSource> {
-        Factory(self) {
-            AccessTokenKeychainDataSourceImpl(service: self.keychainServiceAuth())
-        }
-        .singleton
-    }
+//    public var saveAccessTokenDataSource: Factory<AccessTokenKeychainDataSource> {
+//        Factory(self) {
+//            AccessTokenKeychainDataSourceImpl(service: self.keychainServiceAuth())
+//        }
+//        .singleton
+//    }
     
-    public var saveLocationDataSource: Factory<LocationKeychainDataSource> {
-        Factory(self) {
-            LocationKeychainDataSourceImpl(service: self.keychainServiceAuth())
-        }
-        .singleton
-    }
+//    public var saveLocationDataSource: Factory<LocationKeychainDataSource> {
+//        Factory(self) {
+//            LocationKeychainDataSourceImpl(service: self.keychainServiceAuth())
+//        }
+//        .singleton
+//    }
     
-    public var accessTokenRepository: Factory<AccessTokenRepository> {
-        Factory(self) {
-            AccessTokenRepositoryImpl(dataSource: self.saveAccessTokenDataSource())
-        }
-        .singleton
-    }
+//    public var accessTokenRepository: Factory<AccessTokenRepository> {
+//        Factory(self) {
+//            AccessTokenRepositoryImpl(dataSource: self.saveAccessTokenDataSource())
+//        }
+//        .singleton
+//    }
+//    
+//    public var locationRepository: Factory<LocationRepository> {
+//        Factory(self) {
+//            LocationRepositoryImpl(dataSource: self.saveLocationDataSource())
+//        }
+//        .singleton
+//    }
+//    
+//    public var saveUserDataSource: Factory<UserKeychainDataSource> {
+//        Factory(self) {
+//            UserKeychainDataSourceImpl(service: self.keychainServiceUser())
+//        }
+//        .singleton
+//    }
     
-    public var locationRepository: Factory<LocationRepository> {
-        Factory(self) {
-            LocationRepositoryImpl(dataSource: self.saveLocationDataSource())
-        }
-        .singleton
-    }
+//    public var userRepository: Factory<UserRepository> {
+//        Factory(self) {
+//            UserRepositoryImpl(dataSource: self.saveUserDataSource())
+//        }
+//        .singleton
+//    }
+//    
+//    public var saveAccessTokenUseCase: Factory<SaveAccessTokenUseCase> {
+//        Factory(self) {
+//            SaveAccessTokenUseCaseImpl(repository: self.accessTokenRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var saveLocationUseCase: Factory<SaveLocationUseCase> {
+//        Factory(self) {
+//            SaveLocationUseCaseImpl(repository: self.locationRepository())
+//        }
+//        .singleton
+//    }
     
-    public var saveUserDataSource: Factory<UserKeychainDataSource> {
-        Factory(self) {
-            UserKeychainDataSourceImpl(service: self.keychainServiceUser())
-        }
-        .singleton
-    }
-    
-    public var userRepository: Factory<UserRepository> {
-        Factory(self) {
-            UserRepositoryImpl(dataSource: self.saveUserDataSource())
-        }
-        .singleton
-    }
-    
-    public var saveAccessTokenUseCase: Factory<SaveAccessTokenUseCase> {
-        Factory(self) {
-            SaveAccessTokenUseCaseImpl(repository: self.accessTokenRepository())
-        }
-        .singleton
-    }
-    
-    public var saveLocationUseCase: Factory<SaveLocationUseCase> {
-        Factory(self) {
-            SaveLocationUseCaseImpl(repository: self.locationRepository())
-        }
-        .singleton
-    }
-    
-    public var saveUserUseCase: Factory<SaveUserUseCase> {
-        Factory(self) {
-            SaveUserUseCaseImpl(repository: self.userRepository())
-        }
-        .singleton
-    }
-    
-    public var retrieveUserUseCase: Factory<RetrieveUserUseCase> {
-        Factory(self) {
-            RetrieveUserUseCaseImpl(repository: self.userRepository())
-        }
-        .singleton
-    }
-    
-    public var deleteAccessTokenUseCase: Factory<DeleteAccessTokenUseCase> {
-        Factory(self) {
-            DeleteAccessTokenUseCaseImpl(repository: self.accessTokenRepository())
-        }
-        .singleton
-    }
-    
-    public var deleteLocationUseCase: Factory<DeleteLocationUseCase> {
-        Factory(self) {
-            DeleteLocationUseCaseImpl(repository: self.locationRepository())
-        }
-        .singleton
-    }
-    
-    public var retrieveAccessTokenUseCase: Factory<RetrieveAccessTokenUseCase> {
-        Factory(self) {
-            RetrieveAccessTokenUseCaseImpl(repository: self.accessTokenRepository())
-        }
-        .singleton
-    }
-    
-    public var retrieveLocationUseCase: Factory<RetrieveLocationUseCase> {
-        Factory(self) {
-            RetrieveLocationUseCaseImpl(repository: self.locationRepository())
-        }
-        .singleton
-    }
-    
-    public var deleteUserUseCase: Factory<DeleteUserUseCase> {
-        Factory(self) {
-            DeleteUserUseCaseImpl(repository: self.userRepository())
-        }
-        .singleton
-    }
+//    public var saveUserUseCase: Factory<SaveUserUseCase> {
+//        Factory(self) {
+//            SaveUserUseCaseImpl(repository: self.userRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var retrieveUserUseCase: Factory<RetrieveUserUseCase> {
+//        Factory(self) {
+//            RetrieveUserUseCaseImpl(repository: self.userRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var deleteAccessTokenUseCase: Factory<DeleteAccessTokenUseCase> {
+//        Factory(self) {
+//            DeleteAccessTokenUseCaseImpl(repository: self.accessTokenRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var deleteLocationUseCase: Factory<DeleteLocationUseCase> {
+//        Factory(self) {
+//            DeleteLocationUseCaseImpl(repository: self.locationRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var retrieveAccessTokenUseCase: Factory<RetrieveAccessTokenUseCase> {
+//        Factory(self) {
+//            RetrieveAccessTokenUseCaseImpl(repository: self.accessTokenRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var retrieveLocationUseCase: Factory<RetrieveLocationUseCase> {
+//        Factory(self) {
+//            RetrieveLocationUseCaseImpl(repository: self.locationRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var deleteUserUseCase: Factory<DeleteUserUseCase> {
+//        Factory(self) {
+//            DeleteUserUseCaseImpl(repository: self.userRepository())
+//        }
+//        .singleton
+//    }
     
     public var selectedLanguageSubject: Factory<CurrentValueSubject<LanguageRepresentable?, Never>> {
         Factory(self) {

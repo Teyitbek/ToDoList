@@ -1,8 +1,8 @@
 import ActivityIndicator
 import KeyboardManager
-import SwiftMessages
+//import SwiftMessages
 import UIKit
-import MessageView
+//import MessageView
 import Base
 import LocalizationManager
 
@@ -40,11 +40,11 @@ extension PincodeVC {
 
 extension PincodeVC: PincodeViewDelegate {
     func onPinEntered(_ pin: String) {
-        if pin == "0000" { // TODO: - For test only. Remove later
-            viewModel.resetLocation()
-            return
-        }
-        
-        viewModel.login(pincode: pin)
+//        if pin == "0000" { // TODO: - For test only. Remove later
+//            viewModel.resetLocation()
+//            return
+//        }
+//        
+//        viewModel.login(pincode: pin)
     }
 }

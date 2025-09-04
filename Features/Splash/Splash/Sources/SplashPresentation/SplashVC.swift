@@ -1,5 +1,5 @@
 import ActivityIndicator
-import MessageView
+//import MessageView
 import UIKit
 import Base
 

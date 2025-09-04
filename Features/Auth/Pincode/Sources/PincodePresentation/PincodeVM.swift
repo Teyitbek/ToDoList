@@ -15,7 +15,7 @@ public protocol PincodeViewModel {
     @MainActor
     func login(pincode: String)
     
-    func resetLocation()
+//    func resetLocation()
 }
 
 public final class PincodeVM: ViewModel, PincodeViewModel {
@@ -37,7 +37,7 @@ public final class PincodeVM: ViewModel, PincodeViewModel {
         self.configs = configs
         self.sessionService = sessionService
         self.loginUseCase = loginUseCase
-        self.location = sessionService.retrieveLocation()
+//        self.location = sessionService.retrieveLocation()
         super.init(labelsSubject: labelsSubjct)
     }
     
@@ -48,8 +48,8 @@ public final class PincodeVM: ViewModel, PincodeViewModel {
         loginTask = Task {
             do {
                 let response = try await loginUseCase.execute(with: LoginCredentials(pin: pincode))
-                try sessionService.save(accessToken: AccessToken(accessToken: response.accessToken))
-                try sessionService.save(user: response.data)
+//                try sessionService.save(accessToken: AccessToken(accessToken: response.accessToken))
+//                try sessionService.save(user: response.data)
                 onSetAccessToken?(response.accessToken)
                 activityIndicatorIsHiddenSubject.send(true)
                 onFinish?()
@@ -60,8 +60,8 @@ public final class PincodeVM: ViewModel, PincodeViewModel {
         }
     }
     
-    public func resetLocation() {
-        try? sessionService.resetAll()
-        onFinish?()
-    }
+//    public func resetLocation() {
+//        try? sessionService.resetAll()
+//        onFinish?()
+//    }
 }

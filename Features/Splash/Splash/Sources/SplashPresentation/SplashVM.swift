@@ -20,7 +20,7 @@ public protocol SplashViewModel {
     var appInit: CurrentValueSubject<AppInit, Never> { get }
     var appInitTask: Task<Void, Never>? { get set }
 
-    func getDeviceUIDIfNeeded() async throws -> String
+//    func getDeviceUIDIfNeeded() async throws -> String
 }
 
 public typealias UseCases = (deviceUid: GetDeviceUIDUseCase, appInit: GetAppInitUseCase, index: GetAccountIndexUseCase)
@@ -54,55 +54,55 @@ public final class SplashVM: ViewModel, SplashViewModel {
         super.init(labelsSubject: labelsSubjct)
     }
     
-    public func getDeviceUIDIfNeeded() async throws -> String {
-        if let deviceUID = try sessionService.retrieveDeviceUID() {
-            return deviceUID
-        } else {
-            return try await useCases.deviceUid.execute(appType: appType, appVersion: appVersion)
-        }
-    }
+//    public func getDeviceUIDIfNeeded() async throws -> String {
+//        if let deviceUID = try sessionService.retrieveDeviceUID() {
+//            return deviceUID
+//        } else {
+//            return try await useCases.deviceUid.execute(appType: appType, appVersion: appVersion)
+//        }
+//    }
     
-    public func fetchAccountIndexIfPossible() async throws -> UserRepresentable? {
-        if sessionService.accessTokenIsAvailable {
-            return try await self.useCases.index.execute()
-        } else {
-            return nil
-        }
-    }
+//    public func fetchAccountIndexIfPossible() async throws -> UserRepresentable? {
+//        if sessionService.accessTokenIsAvailable {
+//            return try await self.useCases.index.execute()
+//        } else {
+//            return nil
+//        }
+//    }
     
     @MainActor
     func checksAndFetchRequiredData() {
-        activityIndicatorIsHiddenSubject.send(false)
-        deviceUIDTask = Task {
-            do {
-                let deviceUid = try await getDeviceUIDIfNeeded()
-                onSetDeviceUID?(deviceUid)
-                try sessionService.save(deviceUID: deviceUid)
-                
-                if let accountIndexResponse = try await fetchAccountIndexIfPossible() {
-                    try sessionService.save(user: accountIndexResponse)
-                }
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                    self.onFinish?(true)
-                    self.activityIndicatorIsHiddenSubject.send(true)
-                })
-            } catch {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                    self.activityIndicatorIsHiddenSubject.send(true)
-                    self.errorSubject.send(error)
-                    self.deleteAccessTokenAndAccount()
-                    self.onUnauthorizedFinish?(true)
-                })
-            }
-        }
+//        activityIndicatorIsHiddenSubject.send(false)
+//        deviceUIDTask = Task {
+//            do {
+//                let deviceUid = try await getDeviceUIDIfNeeded()
+//                onSetDeviceUID?(deviceUid)
+//                try sessionService.save(deviceUID: deviceUid)
+//                
+//                if let accountIndexResponse = try await fetchAccountIndexIfPossible() {
+//                    try sessionService.save(user: accountIndexResponse)
+//                }
+//                
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+//                    self.onFinish?(true)
+//                    self.activityIndicatorIsHiddenSubject.send(true)
+//                })
+//            } catch {
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+//                    self.activityIndicatorIsHiddenSubject.send(true)
+//                    self.errorSubject.send(error)
+//                    self.deleteAccessTokenAndAccount()
+//                    self.onUnauthorizedFinish?(true)
+//                })
+//            }
+//        }
     }
     
     func deleteAccessTokenAndAccount() {
-        do {
-            try sessionService.deleteAccessToken()
-        } catch {
-            errorSubject.send(error)
-        }
+//        do {
+//            try sessionService.deleteAccessToken()
+//        } catch {
+//            errorSubject.send(error)
+//        }
     }
 }

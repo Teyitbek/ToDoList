@@ -33,11 +33,11 @@ public final class PincodeContainer: ManagedContainer {
         }
     }
     
-    public var socketService: Factory<SocketServicing> {
-        Factory(self) {
-            AppContainer.shared.socketService()
-        }
-    }
+//    public var socketService: Factory<SocketServicing> {
+//        Factory(self) {
+//            AppContainer.shared.socketService()
+//        }
+//    }
     
     public var loginRepository: Factory<LoginRepository> {
         Factory(self) {
