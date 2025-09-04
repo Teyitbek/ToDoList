@@ -1,0 +1,3 @@
+protocol DeleteTokenUseCaseProtocol {
+    func execute()
+}

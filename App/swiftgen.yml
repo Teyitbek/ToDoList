@@ -1,0 +1,7 @@
+strings:
+  inputs: ../Core/Shared/Sources/LocalizationManager/Localizable.strings
+  outputs:
+    - templatePath: ../Core/Shared/Sources/LocalizationManager/localizable.stencills
+      output: ../Core/Shared/Sources/LocalizationManager/L10n.swift
+      params:
+        publicAccess: public

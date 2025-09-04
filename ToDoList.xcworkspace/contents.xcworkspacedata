@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "container:App/ToDoList.xcodeproj">
+   </FileRef>
+   <Group
+      location = "group:Core"
+      name = "Core">
+      <FileRef
+         location = "group:Coordinators">
+      </FileRef>
+      <FileRef
+         location = "group:Shared">
+      </FileRef>
+   </Group>
+   <Group
+      location = "group:Components"
+      name = "Components">
+      <FileRef
+         location = "group:TextField">
+      </FileRef>
+      <FileRef
+         location = "group:ActivityIndicator">
+      </FileRef>
+   </Group>
+   <Group
+      location = "group:Features"
+      name = "Features">
+      <Group
+         location = "group:Main"
+         name = "Main">
+         <FileRef
+            location = "group:Start">
+         </FileRef>
+      </Group>
+      <Group
+         location = "group:Auth"
+         name = "Auth">
+         <FileRef
+            location = "group:Pincode">
+         </FileRef>
+      </Group>
+      <Group
+         location = "group:Splash"
+         name = "Splash">
+         <FileRef
+            location = "group:Splash">
+         </FileRef>
+      </Group>
+   </Group>
+</Workspace>

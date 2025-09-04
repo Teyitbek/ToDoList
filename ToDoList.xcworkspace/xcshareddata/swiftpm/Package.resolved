@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "factory",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hmlongco/Factory",
+      "state" : {
+        "branch" : "main",
+        "revision" : "6b28e66f4412c8b4dc8d1de688821dd126f6c7cf"
+      }
+    },
+    {
+      "identity" : "realhttp",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/immobiliare/RealHTTP",
+      "state" : {
+        "branch" : "main",
+        "revision" : "c0ffb265eae8684da02ad20cfcc147c23463ad95"
+      }
+    }
+  ],
+  "version" : 2
+}
