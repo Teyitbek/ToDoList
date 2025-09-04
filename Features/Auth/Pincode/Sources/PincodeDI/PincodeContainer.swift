@@ -9,11 +9,11 @@ import Factory
 public final class PincodeContainer: ManagedContainer {
     public let manager: ContainerManager = ContainerManager()
     
-    public var googleClientID: Factory<String> {
-        Factory(self) {
-            AppContainer.shared.googleClientID()
-        }
-    }
+//    public var googleClientID: Factory<String> {
+//        Factory(self) {
+//            AppContainer.shared.googleClientID()
+//        }
+//    }
     
     public var sessionService: Factory<SessionManaging> {
         Factory(self) {

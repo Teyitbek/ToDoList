@@ -13,16 +13,16 @@ import Base
 public final class AppCoordinatorFactory: CoordinatorFactory {
     public init() {}
     
-//    public func makeAuthCoordinator(router: any Router, biometricService: BiometricService, sessionService: SessionManaging, window: UIWindow) -> Coordinator & AuthCoordinatorResult {
-//        AuthCoordinator(router: router, factory: AuthFactory(), biometricService: biometricService, sessionService: sessionService, window: window)
-//    }
+    public func makeSplashCoordinator(router: any Router) -> any Coordinator & SplashCoordinatorResult {
+        SplashCoordinator(router: router, factory: SplashFactoryImpl())
+    }
+    
+    public func makeAuthCoordinator(router: any Router, sessionService: SessionManaging) -> Coordinator & AuthCoordinatorResult {
+        AuthCoordinator(router: router, factory: AuthFactory(), sessionService: sessionService)
+    }
 //    
 //    public func makeLocationCoordinator(router: any Router, window: UIWindow) -> Coordinator & LocationCoordinatorResult {
 //        LocationCoordinator(router: router, factory: LocationModuleFactory(), window: window)
-//    }
-//    
-//    public func makeSplashCoordinator(router: any Router, window: UIWindow) -> any Coordinator & SplashCoordinatorResult {
-//        SplashCoordinator(router: router, factory: SplashFactoryImpl(), window: window)
 //    }
 //    
 //    public func makeKioskCoordinator(router: any Router, window: UIWindow) -> Coordinator & KioskCoordinatorResult {

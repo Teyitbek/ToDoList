@@ -11,6 +11,7 @@ public final class SplashCV: ContentView, SplashContentView {
     public var imageView = UIImageView.build {
         $0.contentMode = .scaleAspectFill
         $0.image = .splash
+        $0.backgroundColor = .red
     }
     
     override public init(frame: CGRect) {
@@ -37,6 +38,6 @@ public final class SplashCV: ContentView, SplashContentView {
     }
     
     func setProperties() {
-        backgroundColor = .white
+        backgroundColor = .green
     }
 }

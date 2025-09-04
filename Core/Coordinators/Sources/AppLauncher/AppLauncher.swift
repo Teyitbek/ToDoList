@@ -28,8 +28,7 @@ final public class AppLauncher {
         coordinator = AppCoordinator(router: router,
                                      coordinatorFactory: appCoordinatorFactory,
                                      instructor: instructor,
-                                     container: container,
-                                     window: window)
+                                     container: container)
         coordinator.start()
         
 //        container.socketService().socketStatusSubject

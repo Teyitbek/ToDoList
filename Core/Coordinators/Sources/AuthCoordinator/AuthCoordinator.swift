@@ -10,14 +10,14 @@ public final class AuthCoordinator: BaseCoordinator, AuthCoordinatorResult {
     private let factory: AuthenticationFactory
 //    private let biometricService: BiometricService
     private let sessionService: SessionManaging
-    public var window: UIWindow!
+//    public var window: UIWindow!
     
-    public init(router: any Router, factory: AuthenticationFactory, sessionService: SessionManaging, window: UIWindow) {
+    public init(router: any Router, factory: AuthenticationFactory, sessionService: SessionManaging) {
         self.router = router
         self.factory = factory
 //        self.biometricService = biometricService
         self.sessionService = sessionService
-        self.window = window
+//        self.window = window
     }
     
     override public func start() {
@@ -27,7 +27,6 @@ public final class AuthCoordinator: BaseCoordinator, AuthCoordinatorResult {
     private func showLogin() {
         let module = factory.makeLoginVC()
         module.viewModel.onFinish = finishFlow
-        self.window.rootViewController = module
-        self.window.makeKeyAndVisible()
+        router.setRootModule(module)
     }
 }

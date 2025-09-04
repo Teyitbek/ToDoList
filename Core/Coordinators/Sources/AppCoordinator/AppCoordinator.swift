@@ -13,14 +13,14 @@ public final class AppCoordinator: BaseCoordinator {
     private var option: DeepLinkOption?
     private var instructor: any Instructor
     private var cancellables = Set<AnyCancellable>()
-    public var window: UIWindow!
+//    public var window: UIWindow!
     
-    public init(router: any Router, coordinatorFactory: CoordinatorFactory, instructor: any Instructor, container: AppContainer, window: UIWindow) {
+    public init(router: Router, coordinatorFactory: CoordinatorFactory, instructor: any Instructor, container: AppContainer) {
         self.router = router
         self.coordinatorFactory = coordinatorFactory
         self.instructor = instructor
         self.container = container
-        self.window = window
+//        self.window = window
         super.init()
     }
     
@@ -41,34 +41,34 @@ public final class AppCoordinator: BaseCoordinator {
         case .splash: runSplashFlow()
         case .auth: runAuthFlow()
         case .location: runLocationFlow()
-        case .main: runKioskFlow()
+        case .main:/* runKioskFlow()*/ runAuthFlow()
         }
     }
     
     private func runSplashFlow() {
-//        var coordinator = coordinatorFactory.makeSplashCoordinator(router: router, window: window)
-//        
-//        coordinator.finishFlow = { [weak self, weak coordinator] isSplashShown in
-//            self?.container.isSplashShown.register { isSplashShown }
-//            self?.instructor.isSplashShown = isSplashShown
-//            self?.runFlow()
-//            self?.removeDependency(coordinator)
-//        }
-//        
-//        addDependency(coordinator)
-//        coordinator.start()
+        var coordinator = coordinatorFactory.makeSplashCoordinator(router: router)
+        
+        coordinator.finishFlow = { [weak self, weak coordinator] isSplashShown in
+            self?.container.isSplashShown.register { isSplashShown }
+            self?.instructor.isSplashShown = isSplashShown
+            self?.runFlow()
+            self?.removeDependency(coordinator)
+        }
+        
+        addDependency(coordinator)
+        coordinator.start()
     }
     
     private func runAuthFlow() {
-//        var coordinator = coordinatorFactory.makeAuthCoordinator(router: router, biometricService: container.biometricService(), sessionService: container.sessionService(), window: window)
-//        
-//        coordinator.finishFlow = { [weak self, weak coordinator] in
-//            self?.runFlow()
-//            self?.removeDependency(coordinator)
-//        }
-//        
-//        addDependency(coordinator)
-//        coordinator.start()
+        var coordinator = coordinatorFactory.makeAuthCoordinator(router: router, sessionService: container.sessionService())
+        
+        coordinator.finishFlow = { [weak self, weak coordinator] in
+            self?.runFlow()
+            self?.removeDependency(coordinator)
+        }
+        
+        addDependency(coordinator)
+        coordinator.start()
     }
     
     private func runLocationFlow() {

@@ -11,15 +11,15 @@ public typealias UseCases = (
 //    retrieveAccessTokenUseCase: RetrieveAccessTokenUseCase,
 //    deleteAccessTokenUseCase: DeleteAccessTokenUseCase,
 //    deleteUserUseCase: DeleteUserUseCase,
-    saveDeviceUIDUseCase: SaveDeviceUIDUseCase,
-    retrieveDeviceUIDUseCase: RetrieveDeviceUIDUseCase,
-    deleteDeviceUIDUseCase: DeleteDeviceUIDUseCase,
-    savePrinterDeviceUseCase: SavePrinterDeviceUseCase,
-    getPrinterDeviceUseCase: GetPrinterDeviceUseCase,
-    deletePrinterDeviceUseCase: DeletePrinterDeviceUseCase,
-    saveTerminalDeviceUseCase: SaveTerminalDeviceUseCase,
-    getTerminalDeviceUseCase: GetTerminalDeviceUseCase,
-    deleteTerminalDeviceUseCase: DeleteTerminalDeviceUseCase
+//    saveDeviceUIDUseCase: SaveDeviceUIDUseCase,
+//    retrieveDeviceUIDUseCase: RetrieveDeviceUIDUseCase,
+//    deleteDeviceUIDUseCase: DeleteDeviceUIDUseCase,
+//    savePrinterDeviceUseCase: SavePrinterDeviceUseCase,
+//    getPrinterDeviceUseCase: GetPrinterDeviceUseCase,
+//    deletePrinterDeviceUseCase: DeletePrinterDeviceUseCase,
+//    saveTerminalDeviceUseCase: SaveTerminalDeviceUseCase,
+//    getTerminalDeviceUseCase: GetTerminalDeviceUseCase,
+//    deleteTerminalDeviceUseCase: DeleteTerminalDeviceUseCase
 )
 
 public final class SessionService: SessionManaging {
@@ -77,17 +77,17 @@ public final class SessionService: SessionManaging {
 //        try useCases.saveUserUseCase.execute(with: user)
 //    }
     
-    public func save(deviceUID: String) throws {
-        try useCases.saveDeviceUIDUseCase.execute(with: deviceUID)
-    }
+//    public func save(deviceUID: String) throws {
+//        try useCases.saveDeviceUIDUseCase.execute(with: deviceUID)
+//    }
     
-    public func retrieveDeviceUID() -> String? {
-        do {
-            return try useCases.retrieveDeviceUIDUseCase.execute()
-        } catch {
-            return nil
-        }
-    }
+//    public func retrieveDeviceUID() -> String? {
+//        do {
+//            return try useCases.retrieveDeviceUIDUseCase.execute()
+//        } catch {
+//            return nil
+//        }
+//    }
     
 //    public func deleteAccessToken() throws {
 //        try useCases.deleteAccessTokenUseCase.execute()
@@ -113,37 +113,37 @@ public final class SessionService: SessionManaging {
 //        }
 //    }
     
-    public func retrievePrinterDevice() -> PrinterDevice? {
-        do {
-            return try useCases.getPrinterDeviceUseCase.execute()
-        } catch {
-            return nil
-        }
-    }
+//    public func retrievePrinterDevice() -> PrinterDevice? {
+//        do {
+//            return try useCases.getPrinterDeviceUseCase.execute()
+//        } catch {
+//            return nil
+//        }
+//    }
     
-    public func save(printerDevice: PrinterDevice) throws {
-        try useCases.savePrinterDeviceUseCase.execute(printerDevice: printerDevice)
-    }
+//    public func save(printerDevice: PrinterDevice) throws {
+//        try useCases.savePrinterDeviceUseCase.execute(printerDevice: printerDevice)
+//    }
+//    
+//    public func deletePrinterDevice() throws {
+//        try useCases.deletePrinterDeviceUseCase.execute()
+//    }
     
-    public func deletePrinterDevice() throws {
-        try useCases.deletePrinterDeviceUseCase.execute()
-    }
-    
-    public func retrieveTerminalDevice() -> TerminalDevice? {
-        do {
-            return try useCases.getTerminalDeviceUseCase.execute()
-        } catch {
-            return nil
-        }
-    }
-    
-    public func save(terminalDevice: TerminalDevice) throws {
-        try useCases.saveTerminalDeviceUseCase.execute(terminalDevice: terminalDevice)
-    }
-    
-    public func deleteTerminalDevice() throws {
-        try useCases.deleteTerminalDeviceUseCase.execute()
-    }
+//    public func retrieveTerminalDevice() -> TerminalDevice? {
+//        do {
+//            return try useCases.getTerminalDeviceUseCase.execute()
+//        } catch {
+//            return nil
+//        }
+//    }
+//    
+//    public func save(terminalDevice: TerminalDevice) throws {
+//        try useCases.saveTerminalDeviceUseCase.execute(terminalDevice: terminalDevice)
+//    }
+//    
+//    public func deleteTerminalDevice() throws {
+//        try useCases.deleteTerminalDeviceUseCase.execute()
+//    }
     
 //    public func resetAll() throws {
 //        try useCases.deleteAccessTokenUseCase.execute()
@@ -157,9 +157,9 @@ public final class SessionService: SessionManaging {
 //        try useCases.deleteUserUseCase.execute()
 //    }
     
-    public func deleteDeviceUID() throws {
-        try useCases.deleteDeviceUIDUseCase.execute()
-    }
+//    public func deleteDeviceUID() throws {
+//        try useCases.deleteDeviceUIDUseCase.execute()
+//    }
     
 //    public func deleteUser() throws {
 //        try useCases.deleteUserUseCase.execute()

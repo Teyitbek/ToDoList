@@ -40,12 +40,12 @@ public final class AppContainer: SharedContainer {
         .singleton
     }
     
-    public var cartSubject: Factory<CurrentValueSubject<Domain.Cart, Never>> {
-        Factory(self) {
-            CurrentValueSubject<Domain.Cart, Never>(.init())
-        }
-        .singleton
-    }
+//    public var cartSubject: Factory<CurrentValueSubject<Domain.Cart, Never>> {
+//        Factory(self) {
+//            CurrentValueSubject<Domain.Cart, Never>(.init())
+//        }
+//        .singleton
+//    }
     
     public var sessionService: Factory<SessionManaging> {
         Factory(self) {
@@ -59,15 +59,15 @@ public final class AppContainer: SharedContainer {
 //                    self.retrieveAccessTokenUseCase(),
 //                    self.deleteAccessTokenUseCase(),
 //                    self.deleteUserUseCase(),
-                    self.localSaveDeviceUIDUseCase(),
-                    self.localRetrieveDeviceUIDUseCase(),
-                    self.localDeleteDeviceUIDUseCase(),
-                    self.savePrinterDeviceUseCase(),
-                    self.getPrinterDeviceUseCase(),
-                    self.deletePrinterDeviceUseCase(),
-                    self.saveTerminalDeviceUseCase(),
-                    self.getTerminalDeviceUseCase(),
-                    self.deleteTerminalDeviceUseCase()
+//                    self.localSaveDeviceUIDUseCase(),
+//                    self.localRetrieveDeviceUIDUseCase(),
+//                    self.localDeleteDeviceUIDUseCase(),
+//                    self.savePrinterDeviceUseCase(),
+//                    self.getPrinterDeviceUseCase(),
+//                    self.deletePrinterDeviceUseCase(),
+//                    self.saveTerminalDeviceUseCase(),
+//                    self.getTerminalDeviceUseCase(),
+//                    self.deleteTerminalDeviceUseCase()
                 )
             )
         }.singleton
@@ -81,7 +81,7 @@ public final class AppContainer: SharedContainer {
     
     public var appType: Factory<String> {
         Factory(self) {
-            "ios-todolist"
+            ""
         }.singleton
     }
     
@@ -117,39 +117,39 @@ public final class AppContainer: SharedContainer {
         }.singleton
     }
     
-    public var googleClientID: Factory<String> {
-        Factory(self) {
-            ""
-        }.singleton
-    }
+//    public var googleClientID: Factory<String> {
+//        Factory(self) {
+//            ""
+//        }.singleton
+//    }
     
-    public var stripeRedirectURL: Factory<String> {
-        Factory(self) {
-            ""
-        }
-        .singleton
-    }
+//    public var stripeRedirectURL: Factory<String> {
+//        Factory(self) {
+//            ""
+//        }
+//        .singleton
+//    }
     
-    public var socketURL: Factory<String> {
-        Factory(self) {
-            ""
-        }
-        .singleton
-    }
+//    public var socketURL: Factory<String> {
+//        Factory(self) {
+//            ""
+//        }
+//        .singleton
+//    }
     
-    public var applePayMerchantID: Factory<String> {
-        Factory(self) {
-            ""
-        }
-        .singleton
-    }
+//    public var applePayMerchantID: Factory<String> {
+//        Factory(self) {
+//            ""
+//        }
+//        .singleton
+//    }
     
-    public var applePayMerchantCountryCode: Factory<String> {
-        Factory(self) {
-            ""
-        }
-        .singleton
-    }
+//    public var applePayMerchantCountryCode: Factory<String> {
+//        Factory(self) {
+//            ""
+//        }
+//        .singleton
+//    }
     
 //    public var biometricService: Factory<BiometricService> {
 //        Factory(self) {
@@ -213,10 +213,10 @@ public final class AppContainer: SharedContainer {
     public var client: Factory<HTTPClient> {
         Factory(self) {
             let client = HTTPClient(baseURL: URL(string: self.baseAPIURL()))
-            client.validators.append(DeviceValidator(deleteLocationSubject: self.deleteLocationSubject()))
-            client.validators.append(UserValidator(logOutClosure: self.logOutSubject()))
+//            client.validators.append(DeviceValidator(deleteLocationSubject: self.deleteLocationSubject()))
+//            client.validators.append(UserValidator(logOutClosure: self.logOutSubject()))
             client.validators.append(ResponseLogValidator())
-            client.validators.append(ResponseMessageValidator())
+//            client.validators.append(ResponseMessageValidator())
             
 //            if let accessToken = self.sessionService().accessToken {
 //                client.headers.set(.authBearerToken(accessToken))
@@ -226,9 +226,9 @@ public final class AppContainer: SharedContainer {
 //                client.headers.set("locationId", "\(location.id)")
 //            }
             
-            if let languageId = self.selectedLanguageSubject().value?.id {
-                client.headers.set("languageId", languageId)
-            }
+//            if let languageId = self.selectedLanguageSubject().value?.id {
+//                client.headers.set("languageId", languageId)
+//            }
             
             client.headers.set("appType", self.appType())
             client.headers.set("appVersion", self.appVersion())
@@ -365,173 +365,173 @@ public final class AppContainer: SharedContainer {
 //        }
 //        .singleton
 //    }
-    
-    public var selectedLanguageSubject: Factory<CurrentValueSubject<LanguageRepresentable?, Never>> {
-        Factory(self) {
-            do {
-                let language = try self.getSelectedLanguageUseCase().execute()
-                return CurrentValueSubject<LanguageRepresentable?, Never>(language)
-            } catch {
-                return CurrentValueSubject<LanguageRepresentable?, Never>(nil)
-            }
-        }
-        .singleton
-    }
+//    
+//    public var selectedLanguageSubject: Factory<CurrentValueSubject<LanguageRepresentable?, Never>> {
+//        Factory(self) {
+//            do {
+//                let language = try self.getSelectedLanguageUseCase().execute()
+//                return CurrentValueSubject<LanguageRepresentable?, Never>(language)
+//            } catch {
+//                return CurrentValueSubject<LanguageRepresentable?, Never>(nil)
+//            }
+//        }
+//        .singleton
+//    }
 }
 
 // MARK: - Categories
 
-extension AppContainer {
-    // Remote
-    public var languageRemoteDataSource: Factory<LanguagesRemoteDataSource> {
-        Factory(self) {
-            LanguagesRemoteDataSourceImpl(client: AppContainer.shared.client())
-        }
-    }
-    
-    public var languageLocalDataSource: Factory<LanguagesLocalDataSource> {
-        Factory(self) {
-            LanguagesLocalDataSourceImpl(service: AppContainer.shared.userDefaultsService())
-        }
-    }
-    
-    public var languageRemoteRepository: Factory<LanguagesRemoteRepository> {
-        Factory(self) {
-            LanguagesRemoteRepositoryImpl(remoteDataSource: self.languageRemoteDataSource())
-        }
-    }
-    
-    public var languageLocalRepository: Factory<LanguagesLocalRepository> {
-        Factory(self) {
-            LanguagesLocalRepositoryImpl(localDataSource: self.languageLocalDataSource())
-        }
-    }
-    
-    public var getRemoteLanguagesUseCase: Factory<GetRemoteLanguagesUseCase> {
-        Factory(self) {
-            GetRemoteLanguagesUseCaseImpl(repository: self.languageRemoteRepository())
-        }
-    }
-    
-    // Local
-    public var getLanguagesUseCase: Factory<GetLanguagesUseCase> {
-        Factory(self) {
-            GetLanguagesUseCaseImpl(repository: self.languageLocalRepository())
-        }
-    }
-    
-    public var saveLanguagesUseCase: Factory<SaveLanguagesUseCase> {
-        Factory(self) {
-            SaveLanguagesUseCaseImpl(repository: self.languageLocalRepository())
-        }
-    }
-    
-    public var deleteLocalLanguagesUseCase: Factory<DeleteLanguagesUseCase> {
-        Factory(self) {
-            DeleteLanguagesUseCaseImpl(repository: self.languageLocalRepository())
-        }
-        .singleton
-    }
-    
-    // Selected local
-    public var getSelectedLanguageUseCase: Factory<GetSelectedLanguageUseCase> {
-        Factory(self) {
-            GetSelectedLanguageUseCaseImpl(repository: self.languageLocalRepository())
-        }
-        .singleton
-    }
-    
-    public var saveSelectedLanguageUseCase: Factory<SaveSelectedLanguageUseCase> {
-        Factory(self) {
-            SaveSelectedLanguageUseCaseImpl(repository: self.languageLocalRepository())
-        }
-        .singleton
-    }
-    
-    public var deleteSelectedLanguageUseCase: Factory<DeleteSelectedLanguageUseCase> {
-        Factory(self) {
-            DeleteSelectedLanguageUseCaseImpl(repository: self.languageLocalRepository())
-        }
-        .singleton
-    }
-    
-    // Labels
-    public var getLabelsUseCase: Factory<GetLabelsUseCase> {
-        Factory(self) {
-            GetLabelsUseCaseImpl(repository: self.languageRemoteRepository())
-        }
-    }
-    
-    public var saveLabelsUseCase: Factory<SaveLabelsUseCase> {
-        Factory(self) {
-            SaveLabelsUseCaseImpl(repository: self.languageLocalRepository())
-        }
-    }
-}
+//extension AppContainer {
+//    // Remote
+//    public var languageRemoteDataSource: Factory<LanguagesRemoteDataSource> {
+//        Factory(self) {
+//            LanguagesRemoteDataSourceImpl(client: AppContainer.shared.client())
+//        }
+//    }
+//    
+//    public var languageLocalDataSource: Factory<LanguagesLocalDataSource> {
+//        Factory(self) {
+//            LanguagesLocalDataSourceImpl(service: AppContainer.shared.userDefaultsService())
+//        }
+//    }
+//    
+//    public var languageRemoteRepository: Factory<LanguagesRemoteRepository> {
+//        Factory(self) {
+//            LanguagesRemoteRepositoryImpl(remoteDataSource: self.languageRemoteDataSource())
+//        }
+//    }
+//    
+//    public var languageLocalRepository: Factory<LanguagesLocalRepository> {
+//        Factory(self) {
+//            LanguagesLocalRepositoryImpl(localDataSource: self.languageLocalDataSource())
+//        }
+//    }
+//    
+//    public var getRemoteLanguagesUseCase: Factory<GetRemoteLanguagesUseCase> {
+//        Factory(self) {
+//            GetRemoteLanguagesUseCaseImpl(repository: self.languageRemoteRepository())
+//        }
+//    }
+//    
+//    // Local
+//    public var getLanguagesUseCase: Factory<GetLanguagesUseCase> {
+//        Factory(self) {
+//            GetLanguagesUseCaseImpl(repository: self.languageLocalRepository())
+//        }
+//    }
+//    
+//    public var saveLanguagesUseCase: Factory<SaveLanguagesUseCase> {
+//        Factory(self) {
+//            SaveLanguagesUseCaseImpl(repository: self.languageLocalRepository())
+//        }
+//    }
+//    
+//    public var deleteLocalLanguagesUseCase: Factory<DeleteLanguagesUseCase> {
+//        Factory(self) {
+//            DeleteLanguagesUseCaseImpl(repository: self.languageLocalRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    // Selected local
+//    public var getSelectedLanguageUseCase: Factory<GetSelectedLanguageUseCase> {
+//        Factory(self) {
+//            GetSelectedLanguageUseCaseImpl(repository: self.languageLocalRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var saveSelectedLanguageUseCase: Factory<SaveSelectedLanguageUseCase> {
+//        Factory(self) {
+//            SaveSelectedLanguageUseCaseImpl(repository: self.languageLocalRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var deleteSelectedLanguageUseCase: Factory<DeleteSelectedLanguageUseCase> {
+//        Factory(self) {
+//            DeleteSelectedLanguageUseCaseImpl(repository: self.languageLocalRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    // Labels
+//    public var getLabelsUseCase: Factory<GetLabelsUseCase> {
+//        Factory(self) {
+//            GetLabelsUseCaseImpl(repository: self.languageRemoteRepository())
+//        }
+//    }
+//    
+//    public var saveLabelsUseCase: Factory<SaveLabelsUseCase> {
+//        Factory(self) {
+//            SaveLabelsUseCaseImpl(repository: self.languageLocalRepository())
+//        }
+//    }
+//}
 
 // MARK: - DeviceUID
 
-extension AppContainer {
-    public var localDeviceUIDDataStore: Factory<DeviceUIDUserDefaultsDataSource> {
-        Factory(self) {
-            DeviceUIDUserDefaultsDataSourceImpl(service: self.userDefaultsService())
-        }
-        .singleton
-    }
-    
-    public var localDeviceUIDRepository: Factory<DeviceUIDRepository> {
-        Factory(self) {
-            DeviceUIDRepositoryImpl(dataSource: self.localDeviceUIDDataStore())
-        }
-        .singleton
-    }
-    
-    public var localSaveDeviceUIDUseCase: Factory<SaveDeviceUIDUseCase> {
-        Factory(self) {
-            SaveDeviceUIDUseCaseImp(repository: self.localDeviceUIDRepository())
-        }
-        .singleton
-    }
-    
-    public var localRetrieveDeviceUIDUseCase: Factory<RetrieveDeviceUIDUseCase> {
-        Factory(self) {
-            RetrieveDeviceUIDUseCaseImp(repository: self.localDeviceUIDRepository())
-        }
-        .singleton
-    }
-    
-    public var localDeleteDeviceUIDUseCase: Factory<DeleteDeviceUIDUseCase> {
-        Factory(self) {
-            DeleteDeviceUIDUseCaseImp(repository: self.localDeviceUIDRepository())
-        }
-        .singleton
-    }
-}
+//extension AppContainer {
+//    public var localDeviceUIDDataStore: Factory<DeviceUIDUserDefaultsDataSource> {
+//        Factory(self) {
+//            DeviceUIDUserDefaultsDataSourceImpl(service: self.userDefaultsService())
+//        }
+//        .singleton
+//    }
+//    
+//    public var localDeviceUIDRepository: Factory<DeviceUIDRepository> {
+//        Factory(self) {
+//            DeviceUIDRepositoryImpl(dataSource: self.localDeviceUIDDataStore())
+//        }
+//        .singleton
+//    }
+//    
+//    public var localSaveDeviceUIDUseCase: Factory<SaveDeviceUIDUseCase> {
+//        Factory(self) {
+//            SaveDeviceUIDUseCaseImp(repository: self.localDeviceUIDRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var localRetrieveDeviceUIDUseCase: Factory<RetrieveDeviceUIDUseCase> {
+//        Factory(self) {
+//            RetrieveDeviceUIDUseCaseImp(repository: self.localDeviceUIDRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var localDeleteDeviceUIDUseCase: Factory<DeleteDeviceUIDUseCase> {
+//        Factory(self) {
+//            DeleteDeviceUIDUseCaseImp(repository: self.localDeviceUIDRepository())
+//        }
+//        .singleton
+//    }
+//}
 
 // MARK: - Kitchen
 
-extension AppContainer {
-    public var profileRemoteDataSource: Factory<KitchenRemoteDataSource> {
-        Factory(self) {
-            KitchenRemoteDataSourceImpl(client: AppContainer.shared.client())
-        }
-        .singleton
-    }
-    
-    public var profileRepository: Factory<LogOutRepository> {
-        Factory(self) {
-            LogOutRepositoryImpl(remoteDataSource: self.profileRemoteDataSource())
-        }
-        .singleton
-    }
-    
-    public var profileLogOutUseCase: Factory<LogOutUseCase> {
-        Factory(self) {
-            LogOutUseCaseImpl(repository: self.profileRepository())
-        }
-        .singleton
-    }
-}
+//extension AppContainer {
+//    public var profileRemoteDataSource: Factory<KitchenRemoteDataSource> {
+//        Factory(self) {
+//            KitchenRemoteDataSourceImpl(client: AppContainer.shared.client())
+//        }
+//        .singleton
+//    }
+//    
+//    public var profileRepository: Factory<LogOutRepository> {
+//        Factory(self) {
+//            LogOutRepositoryImpl(remoteDataSource: self.profileRemoteDataSource())
+//        }
+//        .singleton
+//    }
+//    
+//    public var profileLogOutUseCase: Factory<LogOutUseCase> {
+//        Factory(self) {
+//            LogOutUseCaseImpl(repository: self.profileRepository())
+//        }
+//        .singleton
+//    }
+//}
 
 // MARK: - App init
 extension AppContainer {
@@ -559,232 +559,232 @@ extension AppContainer {
 
 // MARK: - Shop
 
-extension AppContainer {
-    public var shopDataSource: Factory<ShopDataSource> {
-        Factory(self) {
-            ShopRemoteDataSource(client: self.client())
-        }
-        .singleton
-    }
-    
-    public var shopRepository: Factory<ShopRepository> {
-        Factory(self) {
-            ShopRepositoryImpl(dataSource: self.shopDataSource())
-        }
-        .singleton
-    }
-    
-    public var addToCartUseCase: Factory<AddToCartUseCase>  {
-        Factory(self) {
-            AddToCartUseCaseImpl(repository: self.shopRepository())
-        }
-        .singleton
-    }
-    
-    public var updateQuantityUseCase: Factory<UpdateQuantityUseCase> {
-        Factory(self) {
-            UpdateQuantityUseCaseImpl(repository: self.shopRepository())
-        }
-        .singleton
-    }
-    
-    public var getCartUseCase: Factory<GetCartUseCase> {
-        Factory(self) {
-            GetCartUseCaseImpl(repository: self.shopRepository())
-        }
-        .singleton
-    }
-    
-    public var getSecretUseCase: Factory<GetSecretUseCase> {
-        Factory(self) {
-            GetSecretUseCaseImpl(repository: self.shopRepository())
-        }
-        .singleton
-    }
-    
-    public var confirmPaymentUseCase: Factory<ConfirmPaymentUseCase> {
-        Factory(self) {
-            ConfirmPaymentUseCaseImpl(repository: self.shopRepository())
-        }
-        .singleton
-    }
-    
-    public var clearCartUseCase: Factory<ClearCartUseCase> {
-        Factory(self) {
-            ClearCartUseCaseImpl(repository: self.shopRepository())
-        }
-        .singleton
-    }
-    
-    public var notesUseCase: Factory<NotesUseCase> {
-        Factory(self) {
-            NotesUseCaseImpl(repository: self.shopRepository())
-        }
-        .singleton
-    }
-    
-    public var promoCodeUseCase: Factory<PromoCodeUseCase> {
-        Factory(self) {
-            PromoCodeUseCaseImpl(repository: self.shopRepository())
-        }
-        .singleton
-    }
-    
-    public var payWithPointsUseCase: Factory<PayWithPointsUseCase> {
-        Factory(self) {
-            PayWithPointsUseCaseImpl(repository: self.shopRepository())
-        }
-        .singleton
-    }
-    
-    public var setCartUserDetailsUseCase: Factory<SetCartUserDetailsUseCase> {
-        Factory(self) {
-            SetCartUserDetailsUseCaseImpl(repository: self.shopRepository())
-        }
-        .singleton
-    }
-}
+//extension AppContainer {
+//    public var shopDataSource: Factory<ShopDataSource> {
+//        Factory(self) {
+//            ShopRemoteDataSource(client: self.client())
+//        }
+//        .singleton
+//    }
+//    
+//    public var shopRepository: Factory<ShopRepository> {
+//        Factory(self) {
+//            ShopRepositoryImpl(dataSource: self.shopDataSource())
+//        }
+//        .singleton
+//    }
+//    
+//    public var addToCartUseCase: Factory<AddToCartUseCase>  {
+//        Factory(self) {
+//            AddToCartUseCaseImpl(repository: self.shopRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var updateQuantityUseCase: Factory<UpdateQuantityUseCase> {
+//        Factory(self) {
+//            UpdateQuantityUseCaseImpl(repository: self.shopRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var getCartUseCase: Factory<GetCartUseCase> {
+//        Factory(self) {
+//            GetCartUseCaseImpl(repository: self.shopRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var getSecretUseCase: Factory<GetSecretUseCase> {
+//        Factory(self) {
+//            GetSecretUseCaseImpl(repository: self.shopRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var confirmPaymentUseCase: Factory<ConfirmPaymentUseCase> {
+//        Factory(self) {
+//            ConfirmPaymentUseCaseImpl(repository: self.shopRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var clearCartUseCase: Factory<ClearCartUseCase> {
+//        Factory(self) {
+//            ClearCartUseCaseImpl(repository: self.shopRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var notesUseCase: Factory<NotesUseCase> {
+//        Factory(self) {
+//            NotesUseCaseImpl(repository: self.shopRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var promoCodeUseCase: Factory<PromoCodeUseCase> {
+//        Factory(self) {
+//            PromoCodeUseCaseImpl(repository: self.shopRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var payWithPointsUseCase: Factory<PayWithPointsUseCase> {
+//        Factory(self) {
+//            PayWithPointsUseCaseImpl(repository: self.shopRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var setCartUserDetailsUseCase: Factory<SetCartUserDetailsUseCase> {
+//        Factory(self) {
+//            SetCartUserDetailsUseCaseImpl(repository: self.shopRepository())
+//        }
+//        .singleton
+//    }
+//}
 
 // MARK: - Order
-extension AppContainer {
-    public var orderRemoteDataSource: Factory<OrderDataSource> {
-        Factory(self) {
-            OrderRemoteDataSource(client: AppContainer.shared.client())
-        }
-        .singleton
-    }
-    
-    public var orderRepository: Factory<OrderRepository> {
-        Factory(self) {
-            OrderRepositoryImpl(dataSource: self.orderRemoteDataSource())
-        }
-        .singleton
-    }
-    
-    public var getOrderItemDetailsUseCase: Factory<GetOrderItemDetailsUseCase> {
-        Factory(self) {
-            GetOrderItemUseCaseImpl(repository: self.orderRepository())
-        }
-        .singleton
-    }
-    
-    public var postOrderItemDetailsUseCase: Factory<PostOrderItemDetailsUseCase> {
-        Factory(self) {
-            PostOrderItemUseCaseImpl(repository: self.orderRepository())
-        }
-        .singleton
-    }
-}
+//extension AppContainer {
+//    public var orderRemoteDataSource: Factory<OrderDataSource> {
+//        Factory(self) {
+//            OrderRemoteDataSource(client: AppContainer.shared.client())
+//        }
+//        .singleton
+//    }
+//    
+//    public var orderRepository: Factory<OrderRepository> {
+//        Factory(self) {
+//            OrderRepositoryImpl(dataSource: self.orderRemoteDataSource())
+//        }
+//        .singleton
+//    }
+//    
+//    public var getOrderItemDetailsUseCase: Factory<GetOrderItemDetailsUseCase> {
+//        Factory(self) {
+//            GetOrderItemUseCaseImpl(repository: self.orderRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var postOrderItemDetailsUseCase: Factory<PostOrderItemDetailsUseCase> {
+//        Factory(self) {
+//            PostOrderItemUseCaseImpl(repository: self.orderRepository())
+//        }
+//        .singleton
+//    }
+//}
 
 // MARK: - Printer Device
-extension AppContainer {
-    public var printerDeviceDataSource: Factory<PrinterDeviceDataSource> {
-        Factory(self) {
-            PrinterDeviceDataSourceImpl(service: self.userDefaultsService())
-        }
-        .singleton
-    }
-    
-    public var printerDeviceRepository: Factory<PrinterDeviceRepository> {
-        Factory(self) {
-            PrinterDeviceRepositoryImpl(dataSource: self.printerDeviceDataSource())
-        }
-        .singleton
-    }
-    
-    public var savePrinterDeviceUseCase: Factory<SavePrinterDeviceUseCase> {
-        Factory(self) {
-            SavePrinterDeviceUseCaseImpl(repository: self.printerDeviceRepository())
-        }
-    }
-    
-    public var getPrinterDeviceUseCase: Factory<GetPrinterDeviceUseCase> {
-        Factory(self) {
-            GetPrinterDeviceUseCaseImpl(repository: self.printerDeviceRepository())
-        }
-    }
-    
-    public var deletePrinterDeviceUseCase: Factory<DeletePrinterDeviceUseCase> {
-        Factory(self) {
-            DeletePrinterDeviceUseCaseImpl(repository: self.printerDeviceRepository())
-        }
-    }
-}
+//extension AppContainer {
+//    public var printerDeviceDataSource: Factory<PrinterDeviceDataSource> {
+//        Factory(self) {
+//            PrinterDeviceDataSourceImpl(service: self.userDefaultsService())
+//        }
+//        .singleton
+//    }
+//    
+//    public var printerDeviceRepository: Factory<PrinterDeviceRepository> {
+//        Factory(self) {
+//            PrinterDeviceRepositoryImpl(dataSource: self.printerDeviceDataSource())
+//        }
+//        .singleton
+//    }
+//    
+//    public var savePrinterDeviceUseCase: Factory<SavePrinterDeviceUseCase> {
+//        Factory(self) {
+//            SavePrinterDeviceUseCaseImpl(repository: self.printerDeviceRepository())
+//        }
+//    }
+//    
+//    public var getPrinterDeviceUseCase: Factory<GetPrinterDeviceUseCase> {
+//        Factory(self) {
+//            GetPrinterDeviceUseCaseImpl(repository: self.printerDeviceRepository())
+//        }
+//    }
+//    
+//    public var deletePrinterDeviceUseCase: Factory<DeletePrinterDeviceUseCase> {
+//        Factory(self) {
+//            DeletePrinterDeviceUseCaseImpl(repository: self.printerDeviceRepository())
+//        }
+//    }
+//}
 
 // MARK: - Terminal Device
-extension AppContainer {
-    public var terminalDeviceDataSource: Factory<TerminalDeviceDataSource> {
-        Factory(self) {
-            TerminalDeviceDataSourceImpl(service: self.userDefaultsService())
-        }
-        .singleton
-    }
-    
-    public var terminalDeviceRepository: Factory<TerminalDeviceRepository> {
-        Factory(self) {
-            TerminalDeviceRepositoryImpl(dataSource: self.terminalDeviceDataSource())
-        }
-        .singleton
-    }
-    
-    public var saveTerminalDeviceUseCase: Factory<SaveTerminalDeviceUseCase> {
-        Factory(self) {
-            SaveTerminalDeviceUseCaseImpl(repository: self.terminalDeviceRepository())
-        }
-    }
-    
-    public var getTerminalDeviceUseCase: Factory<GetTerminalDeviceUseCase> {
-        Factory(self) {
-            GetTerminalDeviceUseCaseImpl(repository: self.terminalDeviceRepository())
-        }
-    }
-    
-    public var deleteTerminalDeviceUseCase: Factory<DeleteTerminalDeviceUseCase> {
-        Factory(self) {
-            DeleteTerminalDeviceUseCaseImpl(repository: self.terminalDeviceRepository())
-        }
-    }
-}
+//extension AppContainer {
+//    public var terminalDeviceDataSource: Factory<TerminalDeviceDataSource> {
+//        Factory(self) {
+//            TerminalDeviceDataSourceImpl(service: self.userDefaultsService())
+//        }
+//        .singleton
+//    }
+//    
+//    public var terminalDeviceRepository: Factory<TerminalDeviceRepository> {
+//        Factory(self) {
+//            TerminalDeviceRepositoryImpl(dataSource: self.terminalDeviceDataSource())
+//        }
+//        .singleton
+//    }
+//    
+//    public var saveTerminalDeviceUseCase: Factory<SaveTerminalDeviceUseCase> {
+//        Factory(self) {
+//            SaveTerminalDeviceUseCaseImpl(repository: self.terminalDeviceRepository())
+//        }
+//    }
+//    
+//    public var getTerminalDeviceUseCase: Factory<GetTerminalDeviceUseCase> {
+//        Factory(self) {
+//            GetTerminalDeviceUseCaseImpl(repository: self.terminalDeviceRepository())
+//        }
+//    }
+//    
+//    public var deleteTerminalDeviceUseCase: Factory<DeleteTerminalDeviceUseCase> {
+//        Factory(self) {
+//            DeleteTerminalDeviceUseCaseImpl(repository: self.terminalDeviceRepository())
+//        }
+//    }
+//}
 
 // MARK: - Terminal Device Secret
-extension AppContainer {
-    public var deviceSecretDataSource: Factory<DeviceSecretDataSource> {
-        Factory(self) {
-            DeviceSecretDataSourceImpl(client: AppContainer.shared.client(), service: AppContainer.shared.userDefaultsService())
-        }
-    }
-    
-    public var deviceSecretRepository: Factory<DeviceSecretRepository> {
-        Factory(self) {
-            DeviceSecretRepositoryImpl(dataSource: self.deviceSecretDataSource())
-        }
-    }
-    
-    public var getRemoteDeviceSecretUseCase: Factory<GetRemoteDeviceSecretUseCase> {
-        Factory(self) {
-            GetRemoteDeviceSecretUseCaseImpl(repository: self.deviceSecretRepository())
-        }
-    }
-    
-    // Selected local
-    public var getLocalDeviceSecretUseCase: Factory<GetLocalDeviceSecretUseCase> {
-        Factory(self) {
-            GetLocalDeviceSecretUseCaseImpl(repository: self.deviceSecretRepository())
-        }
-        .singleton
-    }
-    
-    public var saveDeviceSecretUseCase: Factory<SaveDeviceSecretUseCase> {
-        Factory(self) {
-            SaveDeviceSecretUseCaseImpl(repository: self.deviceSecretRepository())
-        }
-        .singleton
-    }
-    
-    public var deleteDeviceSecretUseCase: Factory<DeleteDeviceSecretUseCase> {
-        Factory(self) {
-            DeleteDeviceSecretUseCaseImpl(repository: self.deviceSecretRepository())
-        }
-        .singleton
-    }
-}
+//extension AppContainer {
+//    public var deviceSecretDataSource: Factory<DeviceSecretDataSource> {
+//        Factory(self) {
+//            DeviceSecretDataSourceImpl(client: AppContainer.shared.client(), service: AppContainer.shared.userDefaultsService())
+//        }
+//    }
+//    
+//    public var deviceSecretRepository: Factory<DeviceSecretRepository> {
+//        Factory(self) {
+//            DeviceSecretRepositoryImpl(dataSource: self.deviceSecretDataSource())
+//        }
+//    }
+//    
+//    public var getRemoteDeviceSecretUseCase: Factory<GetRemoteDeviceSecretUseCase> {
+//        Factory(self) {
+//            GetRemoteDeviceSecretUseCaseImpl(repository: self.deviceSecretRepository())
+//        }
+//    }
+//    
+//    // Selected local
+//    public var getLocalDeviceSecretUseCase: Factory<GetLocalDeviceSecretUseCase> {
+//        Factory(self) {
+//            GetLocalDeviceSecretUseCaseImpl(repository: self.deviceSecretRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var saveDeviceSecretUseCase: Factory<SaveDeviceSecretUseCase> {
+//        Factory(self) {
+//            SaveDeviceSecretUseCaseImpl(repository: self.deviceSecretRepository())
+//        }
+//        .singleton
+//    }
+//    
+//    public var deleteDeviceSecretUseCase: Factory<DeleteDeviceSecretUseCase> {
+//        Factory(self) {
+//            DeleteDeviceSecretUseCaseImpl(repository: self.deviceSecretRepository())
+//        }
+//        .singleton
+//    }
+//}

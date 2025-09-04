@@ -7,7 +7,10 @@ public final class SplashVC: ViewController<SplashCV, SplashVM> {
     override public func viewDidLoad() {
         super.viewDidLoad()
         bindVM()
-        viewModel.checksAndFetchRequiredData()
+//        viewModel.checksAndFetchRequiredData()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+            self.viewModel.onFinish?(true)
+        }
     }
     
     public override func bindVM() {
