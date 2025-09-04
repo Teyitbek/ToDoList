@@ -1,6 +1,6 @@
 import CollectionView
 import Domain
-import Kingfisher
+//import Kingfisher
 import UIKit
 
 public class LanguageCVCell: CollectionViewCell<LanguageCVCellCV> {
@@ -20,7 +20,7 @@ public class LanguageCVCell: CollectionViewCell<LanguageCVCellCV> {
     
     func setup(with model: LanguageRepresentable, selectedLanguage: LanguageRepresentable?) {
         mainContentView.titleLabel.text = model.title
-        mainContentView.imageView.kf.setImage(with: URL(string: model.icon))
+//        mainContentView.imageView.kf.setImage(with: URL(string: model.icon))
         mainContentView.selected(model.id == selectedLanguage?.id)
     }
 }

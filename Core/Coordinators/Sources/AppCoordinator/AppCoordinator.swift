@@ -31,7 +31,7 @@ public final class AppCoordinator: BaseCoordinator {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] shouldGoToMainScreen in
                 guard let self, shouldGoToMainScreen else { return }
-                runKioskFlow()
+                runMainFlow()
             }
             .store(in: &cancellables)
     }
@@ -41,7 +41,7 @@ public final class AppCoordinator: BaseCoordinator {
         case .splash: runSplashFlow()
         case .auth: runAuthFlow()
         case .location: runLocationFlow()
-        case .main:/* runKioskFlow()*/ runAuthFlow()
+        case .main: runMainFlow()
         }
     }
     
@@ -60,15 +60,15 @@ public final class AppCoordinator: BaseCoordinator {
     }
     
     private func runAuthFlow() {
-        var coordinator = coordinatorFactory.makeAuthCoordinator(router: router, sessionService: container.sessionService())
-        
-        coordinator.finishFlow = { [weak self, weak coordinator] in
-            self?.runFlow()
-            self?.removeDependency(coordinator)
-        }
-        
-        addDependency(coordinator)
-        coordinator.start()
+//        var coordinator = coordinatorFactory.makeAuthCoordinator(router: router, sessionService: container.sessionService())
+//        
+//        coordinator.finishFlow = { [weak self, weak coordinator] in
+//            self?.runFlow()
+//            self?.removeDependency(coordinator)
+//        }
+//        
+//        addDependency(coordinator)
+//        coordinator.start()
     }
     
     private func runLocationFlow() {
@@ -85,24 +85,24 @@ public final class AppCoordinator: BaseCoordinator {
 //        coordinator.start()
     }
     
-    private func runKioskFlow() {
-//        var coordinator = coordinatorFactory.makeKioskCoordinator(router: router, window: window)
-//        
-//        coordinator.finishFlow = { [weak self, weak coordinator] in
-//            self?.removeDependency(coordinator)
-//        }
-//        coordinator.orderFlow = { [weak self] in
-//            self?.runOrderFlow()
-//        }
+    private func runMainFlow() {
+        var coordinator = coordinatorFactory.makeMainCoordinator(router: router)
+        
+        coordinator.finishFlow = { [weak self, weak coordinator] in
+            self?.removeDependency(coordinator)
+        }
+        coordinator.orderFlow = { [weak self] in
+            self?.runOrderFlow()
+        }
 //        coordinator.onEditProductDetails = { [weak self] (navigationController, orderItemId, productDetails) in
 //            guard let self, let product = productDetails.makeProduct() else { return }
 //            runProductDetailsFlow(navigationController: navigationController, product: product, type: .edit(orderItemId, productDetails))
 //        }
-//        
+        
 //        coordinator.onProductDetails = runProductDetailsFlow
-//        
-//        addDependency(coordinator)
-//        coordinator.start()
+        
+        addDependency(coordinator)
+        coordinator.start()
     }
     
     private func runProductDetailsFlow(navigationController: NavigationController, product: ProductRepresentable, type: ProductDetailType) {

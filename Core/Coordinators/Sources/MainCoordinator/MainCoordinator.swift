@@ -11,12 +11,12 @@ public final class MainCoordinator: BaseCoordinator, MainCoordinatorResult {
 
     private let router: Router
     private let factory: MainFactory
-    private var window: UIWindow!
+//    private var window: UIWindow!
     
-    public init(router: Router, factory: MainFactory, window: UIWindow) {
+    public init(router: Router, factory: MainFactory) {
         self.router = router
         self.factory = factory
-        self.window = window
+//        self.window = window
     }
     
     override public func start() {
@@ -25,7 +25,6 @@ public final class MainCoordinator: BaseCoordinator, MainCoordinatorResult {
     
     private func showStartModule() {
         let module = factory.makeStartModule()
-        self.window.rootViewController = module
-        self.window.makeKeyAndVisible()
+        router.setRootModule(module)
     }
 }

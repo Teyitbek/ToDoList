@@ -3,7 +3,7 @@ import CollectionView
 import Constants
 import Combine
 import Domain
-import MessageView
+//import MessageView
 import UIKit
 import Fonts
 import Base
@@ -15,15 +15,15 @@ public final class StartVC: ViewController<StartCV, StartVM> {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        presentActivity()
-        viewModel.getData()
+//        presentActivity()
+//        viewModel.getData()
     }
     
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if viewModel.sessionService.accessTokenIsAvailable {
-            viewModel.socketService.connect()
-        }
+//        if viewModel.sessionService.accessTokenIsAvailable {
+//            viewModel.socketService.connect()
+//        }
     }
     
     public override func bindCV() {
@@ -90,7 +90,7 @@ public final class StartVC: ViewController<StartCV, StartVM> {
     @MainActor
     private func updateBannerImage() {
         let banner = viewModel.bannersSubject.value[safe: currentBannerIndex]
-        contentView.imageView.kf.setImage(with: URL(string: banner?.path ?? ""), placeholder: UIImage.backgroundMain)
+//        contentView.imageView.kf.setImage(with: URL(string: banner?.path ?? ""), placeholder: UIImage.backgroundMain)
     }
 }
 

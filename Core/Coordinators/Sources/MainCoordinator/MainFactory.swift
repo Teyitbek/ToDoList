@@ -13,16 +13,20 @@ public final class MainModuleFactory: MainFactory {
     public func makeStartModule() -> StartVC {
         let container = StartContainer()
         let contentView = StartCV()
+//        let viewModel = StartVM(labelsSubjct: container.labelsSubject(),
+//                                socketService: container.socketService(),
+//                                printerManager: container.printerManager(),
+//                                sessionService: container.sessionService(),
+//                                useCases: (container.getRemoteLanguagesUseCase(),
+//                                           container.saveLanguagesUseCase(),
+//                                           container.saveSelectedLanguageUseCase(),
+//                                           container.getBannersUseCase(),
+//                                           container.getLabelsUseCase(),
+//                                           container.saveLabelsUseCase()))
+        
         let viewModel = StartVM(labelsSubjct: container.labelsSubject(),
-                                socketService: container.socketService(),
-                                printerManager: container.printerManager(),
                                 sessionService: container.sessionService(),
-                                useCases: (container.getRemoteLanguagesUseCase(),
-                                           container.saveLanguagesUseCase(),
-                                           container.saveSelectedLanguageUseCase(),
-                                           container.getBannersUseCase(),
-                                           container.getLabelsUseCase(),
-                                           container.saveLabelsUseCase()))
+                                useCases: ())
         let viewController = StartVC(contentView: contentView, viewModel: viewModel)
         return viewController
     }

@@ -6,7 +6,7 @@ import UIKit
 import SwiftUI
 import TableView
 import TextField
-import FFNavigationBar
+//import FFNavigationBar
 import Base
 
 public protocol StartContentView: UIView {

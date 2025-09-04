@@ -20,28 +20,28 @@ let package = Package(
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
+        .target(name: "AppCoordinator",
+                dependencies: ["SplashCoordinator",
+                               "AuthCoordinator",
+                               "LaunchInstructor",
+                               "MainCoordinator",
+                               "Coordinator"]),
         .target(name: "AuthCoordinator",
                 dependencies: ["Pincode",
                                "Coordinator"]),
         .target(name: "SplashCoordinator",
                 dependencies: ["Splash",
                                "Coordinator"]),
-        .target(name: "AppCoordinator",
-                dependencies: ["SplashCoordinator",
-                               "AuthCoordinator",
-                               "LaunchInstructor",
+        .target(name: "MainCoordinator",
+                dependencies: ["Start",
                                "Coordinator"]),
         .target(name: "Coordinator", dependencies: [.product(name: "Domain", package: "Shared")]),
         .target(name: "LaunchInstructor", dependencies: [.product(name: "Domain", package: "Shared")]),
         .target(name: "AppLauncher", dependencies: ["Coordinator",
                                                     "AppCoordinator",
                                                     "LaunchInstructor",
+                                                    "MainCoordinator",
                                                     .product(name: "AppContainer", package: "Shared"),
-                                                    .product(name: "Domain", package: "Shared")]),
-        .target(name: "MainCoordinator",
-                dependencies: [
-                    "Start",
-                    "Coordinator"
-                ]),
+                                                    .product(name: "Domain", package: "Shared")])
     ]
 )

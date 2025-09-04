@@ -4,7 +4,7 @@ import Domain
 import Coordinator
 import LaunchInstructor
 import SplashCoordinator
-//import MainCoordinator
+import MainCoordinator
 //import CheckoutCoordinator
 //import ProductDetailsCoordinator
 import UIKit
@@ -25,9 +25,9 @@ public final class AppCoordinatorFactory: CoordinatorFactory {
 //        LocationCoordinator(router: router, factory: LocationModuleFactory(), window: window)
 //    }
 //    
-//    public func makeKioskCoordinator(router: any Router, window: UIWindow) -> Coordinator & KioskCoordinatorResult {
-//        KioskCoordinator(router: router, factory: KioskModuleFactory(), window: window)
-//    }
+    public func makeMainCoordinator(router: any Router) -> Coordinator & MainCoordinatorResult {
+        MainCoordinator(router: router, factory: MainModuleFactory())
+    }
 //    
 //    public func makeCheckoutCoordinator(router: any Router, window: UIWindow) -> Coordinator & CheckoutCoordinatorResult {
 //        CheckoutCoordinator(router: router, factory: CheckoutModuleFactory(), window: window)
