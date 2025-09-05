@@ -27,7 +27,7 @@ class PincodeView: UIView {
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         stackView.alignment = .center
-        stackView.spacing = Constants.Constraints.WidthBased._20
+        stackView.spacing = 20
 
         for _ in 0..<4 {
             let label = UILabel()
@@ -36,12 +36,12 @@ class PincodeView: UIView {
             label.font = .systemFont(ofSize: 24, weight: .semibold)
             label.textAlignment = .center
             label.layer.borderWidth = 1
-            label.layer.cornerRadius = Constants.Constraints.HeightBased._8
+            label.layer.cornerRadius = 8
             label.layer.borderColor = UIColor.CED_0_DB.cgColor
             label.clipsToBounds = true
             
             label.anchor(
-                .height(Constants.Constraints.WidthBased._64)
+                .height(Constants.UI.padding64)
             )
             
             pinDigits.append(label)
@@ -60,7 +60,7 @@ class PincodeView: UIView {
     private func setupKeypad() {
         let keypadStackView = UIStackView()
         keypadStackView.axis = .vertical
-        keypadStackView.spacing = Constants.Constraints.HeightBased._12
+        keypadStackView.spacing = Constants.UI.padding12
         addSubview(keypadStackView)
 
         let buttonTitles = [
@@ -73,20 +73,20 @@ class PincodeView: UIView {
         for row in buttonTitles {
             let rowStack = UIStackView()
             rowStack.axis = .horizontal
-            rowStack.spacing = Constants.Constraints.WidthBased._42
+            rowStack.spacing = Constants.UI.padding42
             rowStack.distribution = .fillEqually
 
             for title in row {
                 let button = UIButton(type: .system)
                 button.setTitle(title, for: .normal)
                 button.setTitleColor(.black, for: .normal)
-                button.titleLabel?.font = .systemFont(ofSize: Constants.Constraints.HeightBased._26, weight: .regular)
+                button.titleLabel?.font = .systemFont(ofSize: Constants.UI.padding26, weight: .regular)
                 button.backgroundColor = title.isEmpty ? .clear : .EBEDF_5
-                button.layer.cornerRadius = Constants.Constraints.HeightBased._80 / 2
+                button.layer.cornerRadius = Constants.UI.padding40
                 button.addTarget(self, action: #selector(keypadButtonTapped(_:)), for: .touchUpInside)
                 button.anchor(
-                    .height(Constants.Constraints.HeightBased._80),
-                    .width(Constants.Constraints.HeightBased._80)
+                    .height(Constants.UI.padding80),
+                    .width(Constants.UI.padding80)
                 )
                 rowStack.addArrangedSubview(button)
             }
@@ -94,7 +94,7 @@ class PincodeView: UIView {
         }
         
         keypadStackView.anchor(
-            .top(pinDigits[0].superview!.bottomAnchor, constant: Constants.Constraints.HeightBased._24),
+            .top(pinDigits[0].superview!.bottomAnchor, constant: Constants.UI.padding24),
             .leading(leadingAnchor),
             .trailing(trailingAnchor),
             .bottom(bottomAnchor)

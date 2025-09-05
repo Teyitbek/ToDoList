@@ -30,9 +30,7 @@ open class TableViewCell<ContentView: UIView>: UITableViewCell {
     
     public override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
-        guard shouldHighlightOnTap else {
-            return
-        }
+        guard shouldHighlightOnTap else { return }
         UIView.animate(withDuration: 0.1) {
             self.highlightionView.alpha = highlighted ? 1 : 0
         }

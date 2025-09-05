@@ -10,7 +10,6 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(name: "Fonts", targets: ["Fonts"]),
         .library(name: "Extensions", targets: ["Extensions"]),
-        .library(name: "LocalizationManager", targets: ["LocalizationManager"]),
         .library(name: "AppContainer", targets: ["AppContainer"]),
         .library(name: "Constants", targets: ["Constants"]),
         .library(name: "Data", targets: ["Data"]),
@@ -24,8 +23,9 @@ let package = Package(
         .library(name: "KeyboardManager", targets: ["KeyboardManager"])
     ],
     dependencies: [
-        .package(url: "https://github.com/hmlongco/Factory", branch: "main"),
-        .package(url: "https://github.com/immobiliare/RealHTTP", branch: "main"),
+        .package(url: "https://github.com/hmlongco/Factory", from: "2.4.3"),
+        .package(url: "https://github.com/immobiliare/RealHTTP", from: "1.9.0"),
+        .package(url: "https://github.com/devicekit/DeviceKit.git", from: "5.6.0"),
         .package(name: "ActivityIndicator", path: "ActivityIndicator")
     ],
     targets: [
@@ -35,14 +35,14 @@ let package = Package(
                                            .process("Murecho"),
                                            .process("Murecho.plist"),
                                            .process("Roboto.plist")]),
-        .target(name: "Extensions", dependencies: ["RealHTTP"]),
-        .target(name: "LocalizationManager"),
+        .target(name: "Extensions", dependencies: ["RealHTTP",
+                                                   "DeviceKit"]),
         .target(name: "AppContainer", dependencies: ["Factory",
                                                      "Session",
                                                      "RealHTTP",
                                                      "Data",
                                                      "Domain"]),
-        .target(name: "Constants"),
+        .target(name: "Constants", dependencies: ["Extensions"]),
         .target(name: "Domain"),
         .target(name: "Data", dependencies: ["Domain",
                                              "RealHTTP",

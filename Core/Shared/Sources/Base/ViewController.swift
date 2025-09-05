@@ -1,7 +1,6 @@
 import ActivityIndicator
 import Combine
 import KeyboardManager
-//import MessageView
 import UIKit
 
 open class ViewController<CV: ContentViewRepresentable, VM: ViewModel>: UIViewController {
@@ -60,13 +59,6 @@ open class ViewController<CV: ContentViewRepresentable, VM: ViewModel>: UIViewCo
     }
     
     open func bindVM() {
-        viewModel.labelsSubject
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] labels in
-                self?.localize(with: labels)
-            }
-            .store(in: &cancellables)
-        
         viewModel.activityIndicatorIsHiddenSubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isHidden in
@@ -105,5 +97,3 @@ open class ViewController<CV: ContentViewRepresentable, VM: ViewModel>: UIViewCo
 }
 
 extension ViewController: ActivityPresentable {}
-
-//extension ViewController: MessagePresentable {}

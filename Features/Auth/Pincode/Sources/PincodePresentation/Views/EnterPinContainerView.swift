@@ -35,7 +35,7 @@ public final class EnterPinContainerView: UIView {
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        stackView.spacing = Constants.Constraints.HeightBased._24
+        stackView.spacing = Constants.UI.padding24
     }
     
     func warningView(isHidden: Bool, warningText: String = "") {

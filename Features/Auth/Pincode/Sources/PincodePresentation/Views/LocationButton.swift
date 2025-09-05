@@ -9,7 +9,7 @@ public final class LocationButton: UIButton {
     
     lazy var locationLabel = UILabel.build {
         $0.text = "Select Store"
-        $0.font = .systemFont(ofSize: Constants.Constraints.HeightBased._14, weight: .bold)
+        $0.font = .systemFont(ofSize: Constants.UI.padding14, weight: .bold)
         $0.textColor = ._1_D_1_E_26
         $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -61,7 +61,7 @@ public final class LocationButton: UIButton {
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        stackView.spacing = Constants.Constraints.WidthBased._8
+        stackView.spacing = Constants.UI.padding8
     }
 }
 
@@ -72,15 +72,15 @@ extension LocationButton {
     }
     
     func setConstraints() {
-        stackView.fillSuperview(padding: .init(top: Constants.Constraints.WidthBased._10,
-                                               left: Constants.Constraints.WidthBased._10,
-                                               bottom: Constants.Constraints.WidthBased._10,
-                                               right: Constants.Constraints.WidthBased._10))
+        stackView.fillSuperview(padding: .init(top: Constants.UI.padding10,
+                                               left: Constants.UI.padding10,
+                                               bottom: Constants.UI.padding10,
+                                               right: Constants.UI.padding10))
     }
     
     func setProperties() {
         clipsToBounds = true
         backgroundColor = .EBEDF_5
-        cornerRadius = Constants.Constraints.HeightBased._12
+        cornerRadius = Constants.UI.padding12
     }
 }

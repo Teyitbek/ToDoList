@@ -28,10 +28,10 @@
       location = "group:Features"
       name = "Features">
       <Group
-         location = "group:Main"
-         name = "Main">
+         location = "group:Splash"
+         name = "Splash">
          <FileRef
-            location = "group:Start">
+            location = "group:Splash">
          </FileRef>
       </Group>
       <Group
@@ -42,10 +42,10 @@
          </FileRef>
       </Group>
       <Group
-         location = "group:Splash"
-         name = "Splash">
+         location = "group:Main"
+         name = "Main">
          <FileRef
-            location = "group:Splash">
+            location = "group:Start">
          </FileRef>
       </Group>
    </Group>

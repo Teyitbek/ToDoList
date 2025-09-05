@@ -15,7 +15,6 @@ public protocol PincodeViewModel {
     @MainActor
     func login(pincode: String)
     
-//    func resetLocation()
 }
 
 public final class PincodeVM: ViewModel, PincodeViewModel {
@@ -30,15 +29,14 @@ public final class PincodeVM: ViewModel, PincodeViewModel {
     public var pinCodeErrorSubject = PassthroughSubject<Error, Never>()
     public var location: Locationable?
     
-    public init(labelsSubjct: CurrentValueSubject<[String:String], Never>,
+    public init(
                 configs: PassthroughSubject<Configs, Never>? = nil,
                 sessionService: SessionManaging,
                 loginUseCase: LoginUseCase) {
         self.configs = configs
         self.sessionService = sessionService
         self.loginUseCase = loginUseCase
-//        self.location = sessionService.retrieveLocation()
-        super.init(labelsSubject: labelsSubjct)
+        super.init()
     }
     
     @MainActor

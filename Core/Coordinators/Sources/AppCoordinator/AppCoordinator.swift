@@ -13,14 +13,12 @@ public final class AppCoordinator: BaseCoordinator {
     private var option: DeepLinkOption?
     private var instructor: any Instructor
     private var cancellables = Set<AnyCancellable>()
-//    public var window: UIWindow!
     
     public init(router: Router, coordinatorFactory: CoordinatorFactory, instructor: any Instructor, container: AppContainer) {
         self.router = router
         self.coordinatorFactory = coordinatorFactory
         self.instructor = instructor
         self.container = container
-//        self.window = window
         super.init()
     }
     
@@ -40,7 +38,6 @@ public final class AppCoordinator: BaseCoordinator {
         switch instructor.startOption() {
         case .splash: runSplashFlow()
         case .auth: runAuthFlow()
-        case .location: runLocationFlow()
         case .main: runMainFlow()
         }
     }
@@ -71,36 +68,15 @@ public final class AppCoordinator: BaseCoordinator {
 //        coordinator.start()
     }
     
-    private func runLocationFlow() {
-//        var coordinator = coordinatorFactory.makeLocationCoordinator(router: router, window: window)
-//        
-//        coordinator.finishFlow = { [weak self, weak coordinator] in
-//            self?.container.isSplashShown.register { false }
-//            self?.instructor.isSplashShown = false
-//            self?.runFlow()
-//            self?.removeDependency(coordinator)
-//        }
-//        
-//        addDependency(coordinator)
-//        coordinator.start()
-    }
-    
     private func runMainFlow() {
         var coordinator = coordinatorFactory.makeMainCoordinator(router: router)
         
         coordinator.finishFlow = { [weak self, weak coordinator] in
             self?.removeDependency(coordinator)
         }
-        coordinator.orderFlow = { [weak self] in
-            self?.runOrderFlow()
-        }
-//        coordinator.onEditProductDetails = { [weak self] (navigationController, orderItemId, productDetails) in
-//            guard let self, let product = productDetails.makeProduct() else { return }
-//            runProductDetailsFlow(navigationController: navigationController, product: product, type: .edit(orderItemId, productDetails))
+//        coordinator.orderFlow = { [weak self] in
+//            self?.runOrderFlow()
 //        }
-        
-//        coordinator.onProductDetails = runProductDetailsFlow
-        
         addDependency(coordinator)
         coordinator.start()
     }

@@ -1,12 +1,21 @@
 {
   "pins" : [
     {
+      "identity" : "devicekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/devicekit/DeviceKit.git",
+      "state" : {
+        "revision" : "513b9d7e7a1bd46504a1009bbab943b75ce2f195",
+        "version" : "5.6.0"
+      }
+    },
+    {
       "identity" : "factory",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/hmlongco/Factory",
       "state" : {
-        "branch" : "main",
-        "revision" : "6b28e66f4412c8b4dc8d1de688821dd126f6c7cf"
+        "revision" : "ccc898f21992ebc130bc04cc197460a5ae230bcf",
+        "version" : "2.5.3"
       }
     },
     {
@@ -14,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/immobiliare/RealHTTP",
       "state" : {
-        "branch" : "main",
-        "revision" : "c0ffb265eae8684da02ad20cfcc147c23463ad95"
+        "revision" : "fcec34a9996012aa2dc8ae70fc8c0d7075054739",
+        "version" : "1.9.0"
       }
     }
   ],

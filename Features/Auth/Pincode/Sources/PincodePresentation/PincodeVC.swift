@@ -1,10 +1,7 @@
 import ActivityIndicator
 import KeyboardManager
-//import SwiftMessages
 import UIKit
-//import MessageView
 import Base
-import LocalizationManager
 
 public final class PincodeVC: ViewController<PincodeCV, PincodeVM> {
     override public func viewDidLoad() {
@@ -29,8 +26,8 @@ public final class PincodeVC: ViewController<PincodeCV, PincodeVM> {
     }
     
     public override func localize(with labels: [String : String]) {
-        contentView.enterPinContainerView.titleLabel.text = labels[L10n.Auth.enterPin]
-        contentView.enterPinContainerView.warningView.titleLabel.text = labels[L10n.Message.error]
+//        contentView.enterPinContainerView.titleLabel.text = labels[L10n.Auth.enterPin]
+//        contentView.enterPinContainerView.warningView.titleLabel.text = labels[L10n.Message.error]
     }
 }
 

@@ -40,7 +40,7 @@ public final class SplashVM: ViewModel, SplashViewModel {
     public var sessionService: any SessionManaging
     public var appInit: CurrentValueSubject<AppInit, Never>
     
-    public init(labelsSubjct: CurrentValueSubject<[String:String], Never>,
+    public init(
                 appType: String,
                 appVersion: String,
                 useCases: UseCases,
@@ -51,7 +51,7 @@ public final class SplashVM: ViewModel, SplashViewModel {
         self.useCases = useCases
         self.sessionService = sessionService
         self.appInit = appInitSubject
-        super.init(labelsSubject: labelsSubjct)
+        super.init()
     }
     
 //    public func getDeviceUIDIfNeeded() async throws -> String {

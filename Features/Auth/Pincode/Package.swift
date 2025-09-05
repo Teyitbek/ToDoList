@@ -14,7 +14,7 @@ let package = Package(
     ],
     dependencies: [.package(name: "Shared", path: "Shared"),
                    .package(name: "TextField", path: "TextField"),
-                   .package(url: "https://github.com/hmlongco/Factory", branch: "main"),
+                   .package(url: "https://github.com/hmlongco/Factory", from: "2.4.3"),
                    .package(name: "ActivityIndicator", path: "ActivityIndicator")],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -29,7 +29,6 @@ let package = Package(
                     .product(name: "Extensions", package: "Shared"),
                     .product(name: "Constants", package: "Shared"),
                     .product(name: "Base", package: "Shared"),
-                    .product(name: "LocalizationManager", package: "Shared"),
                     .product(name: "KeyboardManager", package: "Shared")]),
         .target(name: "PincodeDomain", dependencies: [.product(name: "Domain", package: "Shared")]),
         .target(name: "PincodeData", dependencies: ["PincodeDomain",

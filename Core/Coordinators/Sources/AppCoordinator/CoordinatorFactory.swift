@@ -15,6 +15,5 @@ public protocol CoordinatorFactory {
     func makeAuthCoordinator(router: any Router, sessionService: SessionManaging) -> Coordinator & AuthCoordinatorResult
     func makeMainCoordinator(router: any Router) -> Coordinator & MainCoordinatorResult
 //    func makeCheckoutCoordinator(router: any Router, window: UIWindow) -> Coordinator & CheckoutCoordinatorResult
-//    func makeLocationCoordinator(router: any Router, window: UIWindow) -> Coordinator & LocationCoordinatorResult
 //    func makeProductDetailsCoordinator(router: any Router, navigationController: NavigationController, product: ProductRepresentable, type: ProductDetailType) -> Coordinator & ProductDetailsCoordinatorResult
 }

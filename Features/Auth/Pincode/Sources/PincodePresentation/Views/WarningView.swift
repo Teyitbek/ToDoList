@@ -14,13 +14,13 @@ public final class WarningView: UIView {
     lazy var titleLabel = UILabel.build {
         $0.text = "Error"
         $0.textColor = ._1_D_1_E_26
-        $0.font = .systemFont(ofSize: Constants.Constraints.HeightBased._14, weight: .bold)
+        $0.font = .systemFont(ofSize: Constants.UI.padding14, weight: .bold)
         $0.numberOfLines = 0
     }
     
     lazy var subTitleLabel = UILabel.build {
         $0.textColor = ._1_D_1_E_26
-        $0.font = .systemFont(ofSize: Constants.Constraints.HeightBased._14, weight: .regular)
+        $0.font = .systemFont(ofSize: Constants.UI.padding14, weight: .regular)
         $0.numberOfLines = 0
     }
     
@@ -48,30 +48,30 @@ extension WarningView {
     }
     
     func setConstraints() {
-        imageView.anchor(
-            .leading(leadingAnchor, constant: Constants.Constraints.WidthBased._12),
-            .top(topAnchor, constant: Constants.Constraints.HeightBased._12),
-            .width(Constants.Constraints.WidthBased._20),
-            .heightToWidth(1)
-        )
-        
-        titleLabel.anchor(
-            .leading(imageView.trailingAnchor, constant: Constants.Constraints.WidthBased._12),
-            .top(topAnchor, constant: Constants.Constraints.HeightBased._12),
-            .trailing(trailingAnchor, constant: Constants.Constraints.WidthBased._12)
-        )
-        
-        subTitleLabel.anchor(
-            .leading(imageView.trailingAnchor, constant: Constants.Constraints.WidthBased._12),
-            .top(titleLabel.bottomAnchor, constant: Constants.Constraints.HeightBased._4),
-            .trailing(trailingAnchor, constant: Constants.Constraints.WidthBased._12),
-            .bottom(bottomAnchor, constant: Constants.Constraints.HeightBased._12)
-        )
+//        imageView.anchor(
+//            .leading(leadingAnchor, constant: Constants.Constraints.WidthBased._12),
+//            .top(topAnchor, constant: Constants.Constraints.HeightBased._12),
+//            .width(Constants.Constraints.WidthBased._20),
+//            .heightToWidth(1)
+//        )
+//        
+//        titleLabel.anchor(
+//            .leading(imageView.trailingAnchor, constant: Constants.Constraints.WidthBased._12),
+//            .top(topAnchor, constant: Constants.Constraints.HeightBased._12),
+//            .trailing(trailingAnchor, constant: Constants.Constraints.WidthBased._12)
+//        )
+//        
+//        subTitleLabel.anchor(
+//            .leading(imageView.trailingAnchor, constant: Constants.Constraints.WidthBased._12),
+//            .top(titleLabel.bottomAnchor, constant: Constants.Constraints.HeightBased._4),
+//            .trailing(trailingAnchor, constant: Constants.Constraints.WidthBased._12),
+//            .bottom(bottomAnchor, constant: Constants.Constraints.HeightBased._12)
+//        )
     }
     
     func setProperties() {
         clipsToBounds = true
-        cornerRadius = Constants.Constraints.HeightBased._8
+        cornerRadius = Constants.UI.padding8
         backgroundColor = .FFEDC_9
     }
 }

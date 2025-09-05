@@ -3,64 +3,52 @@ import CollectionView
 import Constants
 import Combine
 import Domain
-//import MessageView
 import UIKit
 import Fonts
 import Base
-import LocalizationManager
 
 public final class StartVC: ViewController<StartCV, StartVM> {
-    private var bannerTimer: Timer?
-    private var currentBannerIndex = 0
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-//        presentActivity()
-//        viewModel.getData()
+        //        presentActivity()
+        setupSearchController()
     }
     
-    public override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-//        if viewModel.sessionService.accessTokenIsAvailable {
-//            viewModel.socketService.connect()
-//        }
+    override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.navigationBar.prefersLargeTitles = true
+        title = "Notes"
+        navigationItem.largeTitleDisplayMode = .always
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        appearance.backgroundColor = .black
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        
+    }
+    
+    override public func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     public override func bindCV() {
         super.bindCV()
-        contentView.collectionView.delegate = self
-        contentView.collectionView.dataSource = self
+        contentView.tableView.delegate = self
+        contentView.tableView.dataSource = self
         
-        contentView.startButton.addTarget(self, action: #selector(onStartAction), for: .touchUpInside)
-    }
-    
-    public override func localize(with labels: [String : String]) {
-        contentView.startButton.setTitle(labels[L10n.Actions.touchToStart] ?? "Touch to Start", for: .normal)
+        contentView.bottomView.notestLabel.text = "\(26) notes"
+        contentView.bottomView.addNewNoteButton.addTarget(self, action: #selector(onAddNewNoteAction), for: .touchUpInside)
     }
     
     public override func bindVM() {
         super.bindVM()
-        viewModel.languagesSubject
-            .dropFirst()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] languages in
-                guard let self = self else { return }
-                self.contentView.collectionView.reloadData()
-                self.dismissActivity()
-            }
-            .store(in: &cancellables)
-        
-        viewModel.bannersSubject
-            .dropFirst()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] banners in
-                guard let self = self else { return }
-                self.currentBannerIndex = 0
-                self.updateBannerImage()
-                self.startBannerTimer()
-            }
-            .store(in: &cancellables)
-        
         viewModel.errorSubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] error in
@@ -69,89 +57,117 @@ public final class StartVC: ViewController<StartCV, StartVM> {
             }
             .store(in: &cancellables)
     }
-    
-    private func startBannerTimer() {
-        bannerTimer?.invalidate()
-        bannerTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
-            Task { @MainActor in
-                self.showNextBanner()
-            }
-        }
-    }
-
-    @MainActor
-    private func showNextBanner() {
-        guard !viewModel.bannersSubject.value.isEmpty else { return }
-        currentBannerIndex = (currentBannerIndex + 1) % viewModel.bannersSubject.value.count
-        updateBannerImage()
-    }
-
-    @MainActor
-    private func updateBannerImage() {
-        let banner = viewModel.bannersSubject.value[safe: currentBannerIndex]
-//        contentView.imageView.kf.setImage(with: URL(string: banner?.path ?? ""), placeholder: UIImage.backgroundMain)
-    }
 }
 
 @objc
 private extension StartVC {
-    func onStartAction() {
-        viewModel.saveSelectedLanguage()
+    func onAddNewNoteAction() {
+        viewModel.onAddNewNoteAction?()
     }
 }
-extension StartVC: UICollectionViewDelegate, UICollectionViewDataSource {
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.languagesSubject.value.count
+extension StartVC: UISearchControllerDelegate, UISearchBarDelegate {
+    func setupSearchController() {
+        let search = UISearchController(searchResultsController: nil)
+        search.delegate = self
+        search.searchBar.delegate = self
+        search.searchBar.placeholder = "Search"
+        search.searchBar.tintColor = .white
+        search.searchBar.barStyle = .black
+        search.searchBar.searchTextField.backgroundColor = .white.withAlphaComponent(0.1)
+        navigationItem.searchController = search
+        navigationItem.hidesSearchBarWhenScrolling = true
     }
     
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: LanguageCVCell = collectionView.dequeueReusableCell(for: indexPath)
-        cell.setup(with: viewModel.languagesSubject.value[indexPath.row], selectedLanguage: viewModel.selectedLanguage)
+    public func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        viewModel.isSearchingMode = true
+    }
+    
+    public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        viewModel.isSearchingMode = false
+        viewModel.todoModel = viewModel.initialTodoModel
+        contentView.tableView.reloadData()
+    }
+    
+    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.todoModel = []
+        for item in viewModel.initialTodoModel {
+            if item.todo.lowercased().contains(searchText.lowercased()) {
+                viewModel.todoModel.append(item)
+            }
+        }
+        if searchText.isEmpty {
+            viewModel.todoModel = viewModel.initialTodoModel
+        }
+        contentView.tableView.reloadData()
+    }
+}
+extension StartVC: UITableViewDelegate, UITableViewDataSource {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        viewModel.isSearchingMode ? viewModel.todoModel.count : viewModel.initialTodoModel.count
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: NoteTVCell = tableView.dequeueReusableCell(for: indexPath)
+        cell.setup(with: viewModel.isSearchingMode ? viewModel.todoModel[indexPath.row] : viewModel.initialTodoModel[indexPath.row])
         return cell
     }
     
-    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        scrollToItemCentered(at: indexPath, animated: true)
-        viewModel.selectedLanguage = viewModel.languagesSubject.value[indexPath.row]
-        viewModel.getLabels(onStart: false)
-        presentActivity()
-        collectionView.reloadData()
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(viewModel.isSearchingMode ? viewModel.todoModel[indexPath.row] : viewModel.initialTodoModel[indexPath.row])
+        viewModel.isSearchingMode ? viewModel.todoModel[indexPath.row].completed.toggle() : viewModel.initialTodoModel[indexPath.row].completed.toggle()
+        tableView.reloadData()
     }
     
-    private func scrollToItemCentered(at indexPath: IndexPath, animated: Bool) {
-        guard let layout = contentView.collectionView.collectionViewLayout as? UICollectionViewFlowLayout,
-              let attributes = layout.layoutAttributesForItem(at: indexPath) else { return }
-        let itemFrame = attributes.frame
-        let collectionWidth = contentView.collectionView.bounds.width
-        let offSetX = itemFrame.midX - collectionWidth / 2
-        let maxOffsetX = contentView.collectionView.contentSize.width - collectionWidth
-        let targetOffsetX = max(0, min(offSetX, maxOffsetX))
-        contentView.collectionView.setContentOffset(CGPoint(x: targetOffsetX, y: 0), animated: animated)
-    }
-}
-extension StartVC: UICollectionViewDelegateFlowLayout {
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = viewModel.languagesSubject.value[indexPath.row].title.size(withAttributes: [.font: Fonts.murecho.font(forTextStyle: .title2)])
-        return CGSize(width: width.width + Constants.Constraints.WidthBased._100, height: Constants.Constraints.HeightBased._68)
+    public func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let todo = viewModel.isSearchingMode ? viewModel.todoModel[indexPath.row] : viewModel.initialTodoModel[indexPath.row]
+        return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: {
+            return PreviewVC(model: todo)
+        }, actionProvider: { _ in
+            let edit = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
+                print("Edit tapped")
+            }
+            let share = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up")) { _ in
+                print("Share tapped")
+            }
+            let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                print("Delete tapped")
+            }
+            return UIMenu(title: "", children: [edit, share, delete])
+        })
     }
     
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        guard let layout = collectionViewLayout as? UICollectionViewFlowLayout else { return .zero }
-        let itemCount = collectionView.numberOfItems(inSection: section)
-        guard itemCount > 0 else { return .zero }
-        let itemSize = layout.itemSize
-        let itemSpacing = layout.minimumLineSpacing
-        
-        let totalItemWidth = CGFloat(itemCount) * itemSize.width
-        let totalSpacingWidth = CGFloat(itemCount - 1) * itemSpacing
-        
-        let totalContentWidth = totalItemWidth + totalSpacingWidth
-        let collectionViewWidth = collectionView.bounds.width
-        
-        let inset = max((collectionViewWidth - totalContentWidth) / 2, 0)
-        
-        return UIEdgeInsets(top: 0, left: inset, bottom: 0, right: inset)
+    public func tableView(_ tableView: UITableView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard let indexPath = configuration.identifier as? IndexPath, let cell = tableView.cellForRow(at: indexPath) else { return nil }
+        let parameters = UIPreviewParameters()
+        parameters.backgroundColor = .clear
+        return UITargetedPreview(view: cell.contentView, parameters: parameters)
+    }
+    
+    public func tableView(_ tableView: UITableView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard let indexPath = configuration.identifier as? IndexPath, let cell = tableView.cellForRow(at: indexPath) else { return nil }
+        let parameters = UIPreviewParameters()
+        parameters.backgroundColor = .clear
+        return UITargetedPreview(view: cell.contentView, parameters: parameters)
     }
 }
 
+private class PreviewVC: UIViewController {
+    
+    var model: ToDoModel
+    init(model: ToDoModel) {
+        self.model = model
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    override func loadView() {
+        let contentView = PreviewCV()
+        contentView.titleLabel.text = model.todo
+        contentView.subtitleLabel.text = model.completed ? "Completed" : "Not Completed"
+        contentView.dateLabel.text = model.completed ? "2021-07-28" : "2021-07-27"
+        view = contentView
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}

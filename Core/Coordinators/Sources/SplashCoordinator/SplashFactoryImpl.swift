@@ -11,7 +11,7 @@ public final class SplashFactoryImpl: SplashFactory {
     
     public func makeSplashModule() -> SplashVC {
         let container = SplashContainer()
-        let viewModel = SplashVM(labelsSubjct: container.labelsSubject(),
+        let viewModel = SplashVM(
                                  appType: container.appType(),
                                  appVersion: container.appVersion(),
                                  useCases: (container.deviceUIDUseCase(),

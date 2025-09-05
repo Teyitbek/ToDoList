@@ -20,11 +20,7 @@ public final class AppCoordinatorFactory: CoordinatorFactory {
     public func makeAuthCoordinator(router: any Router, sessionService: SessionManaging) -> Coordinator & AuthCoordinatorResult {
         AuthCoordinator(router: router, factory: AuthFactory(), sessionService: sessionService)
     }
-//    
-//    public func makeLocationCoordinator(router: any Router, window: UIWindow) -> Coordinator & LocationCoordinatorResult {
-//        LocationCoordinator(router: router, factory: LocationModuleFactory(), window: window)
-//    }
-//    
+
     public func makeMainCoordinator(router: any Router) -> Coordinator & MainCoordinatorResult {
         MainCoordinator(router: router, factory: MainModuleFactory())
     }

@@ -11,7 +11,7 @@ public final class AuthFactory: AuthenticationFactory {
     
     public func makeLoginVC() -> PincodeVC {
         let container = PincodeContainer()
-        let viewModel = PincodeVM(labelsSubjct: container.labelsSubject(),
+        let viewModel = PincodeVM(
                                   sessionService: container.sessionService(),
                                   loginUseCase: container.loginUseCase())
         viewModel.onSetAccessToken = container.setAccessToken

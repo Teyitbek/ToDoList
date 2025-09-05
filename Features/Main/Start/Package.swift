@@ -30,7 +30,6 @@ let package = Package(
                     .product(name: "Fonts", package: "Shared"),
                     .product(name: "CollectionView", package: "Shared"),
                     .product(name: "Base", package: "Shared"),
-                    .product(name: "LocalizationManager", package: "Shared"),
                     .product(name: "Constants", package: "Shared")]),
         .target(name: "StartDomain", dependencies: [.product(name: "Domain", package: "Shared")]),
         .target(name: "StartData",
