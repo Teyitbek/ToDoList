@@ -7,15 +7,16 @@ import StartDomain
 import Base
 
 public struct ToDoModel {
-    var id: Int
-    var todo: String
-    var completed: Bool = false
-    var userId: Int
+    public var id: Int
+    public var todo: String
+    public var completed: Bool = false
+    public var userId: Int
 }
 
 public protocol StartViewModel {
     var onStartAction: CompletionClosure? { get set }
     var onAddNewNoteAction: CompletionClosure? { get set }
+    var onDetailsAction: CompletionClosure? { get set }
 }
 
 public typealias UseCases = ()
@@ -23,6 +24,7 @@ public typealias UseCases = ()
 public final class StartVM: ViewModel, StartViewModel {
     public var onStartAction: CompletionClosure?
     public var onAddNewNoteAction: CompletionClosure?
+    public var onDetailsAction: CompletionClosure?
         
     public var sessionService: SessionManaging
     public var useCases: UseCases

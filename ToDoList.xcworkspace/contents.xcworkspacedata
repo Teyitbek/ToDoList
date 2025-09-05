@@ -47,6 +47,9 @@
          <FileRef
             location = "group:Start">
          </FileRef>
+         <FileRef
+            location = "group:Start/Details">
+         </FileRef>
       </Group>
    </Group>
 </Workspace>

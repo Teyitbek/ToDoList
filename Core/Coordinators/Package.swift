@@ -16,6 +16,7 @@ let package = Package(
     dependencies: [.package(name: "Splash", path: "Splash"),
                    .package(name: "Start", path: "Start"),
                    .package(name: "Pincode", path: "Pincode"),
+                   .package(name: "Details", path: "Details"),
                    .package(name: "Shared", path: "Shared")],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -34,6 +35,7 @@ let package = Package(
                                "Coordinator"]),
         .target(name: "MainCoordinator",
                 dependencies: ["Start",
+                               "Details",
                                "Coordinator"]),
         .target(name: "Coordinator", dependencies: [.product(name: "Domain", package: "Shared")]),
         .target(name: "LaunchInstructor", dependencies: [.product(name: "Domain", package: "Shared")]),

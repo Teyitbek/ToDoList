@@ -23,6 +23,12 @@ public final class MainCoordinator: BaseCoordinator, MainCoordinatorResult {
     
     private func showStartModule() {
         let module = factory.makeStartModule()
+        module.viewModel.onDetailsAction = showDetailsModule
         router.setRootModule(module, hideBar: false, hideNavigationBar: false)
+    }
+    
+    private func showDetailsModule() {
+        let module = factory.makeDetailsmodule()
+        router.push(module, hideBar: true)
     }
 }

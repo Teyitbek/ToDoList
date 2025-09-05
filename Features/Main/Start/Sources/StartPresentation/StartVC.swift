@@ -109,13 +109,12 @@ extension StartVC: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: NoteTVCell = tableView.dequeueReusableCell(for: indexPath)
         cell.setup(with: viewModel.isSearchingMode ? viewModel.todoModel[indexPath.row] : viewModel.initialTodoModel[indexPath.row])
+        cell.delegate = self
         return cell
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(viewModel.isSearchingMode ? viewModel.todoModel[indexPath.row] : viewModel.initialTodoModel[indexPath.row])
-        viewModel.isSearchingMode ? viewModel.todoModel[indexPath.row].completed.toggle() : viewModel.initialTodoModel[indexPath.row].completed.toggle()
-        tableView.reloadData()
+        viewModel.onDetailsAction?()
     }
     
     public func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -148,6 +147,14 @@ extension StartVC: UITableViewDelegate, UITableViewDataSource {
         let parameters = UIPreviewParameters()
         parameters.backgroundColor = .clear
         return UITargetedPreview(view: cell.contentView, parameters: parameters)
+    }
+}
+
+extension StartVC: NoteTVCellDelegate {
+    func didTap(_ cell: NoteTVCell) {
+        guard let indexPath = contentView.tableView.indexPath(for: cell) else { return }
+        viewModel.isSearchingMode ? viewModel.todoModel[indexPath.row].completed.toggle() : viewModel.initialTodoModel[indexPath.row].completed.toggle()
+        contentView.tableView.reloadData()
     }
 }
 
