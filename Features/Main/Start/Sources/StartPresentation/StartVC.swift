@@ -1,5 +1,4 @@
 import ActivityIndicator
-import CollectionView
 import Constants
 import Combine
 import Domain
@@ -11,7 +10,8 @@ public final class StartVC: ViewController<StartCV, StartVM> {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        //        presentActivity()
+        presentActivity()
+        viewModel.getData()
         setupSearchController()
     }
     
@@ -153,15 +153,15 @@ extension StartVC: UITableViewDelegate, UITableViewDataSource {
 extension StartVC: NoteTVCellDelegate {
     func didTap(_ cell: NoteTVCell) {
         guard let indexPath = contentView.tableView.indexPath(for: cell) else { return }
-        viewModel.isSearchingMode ? viewModel.todoModel[indexPath.row].completed.toggle() : viewModel.initialTodoModel[indexPath.row].completed.toggle()
+//        viewModel.isSearchingMode ? viewModel.todoModel[indexPath.row].completed.toggle() : viewModel.initialTodoModel[indexPath.row].completed.toggle()
         contentView.tableView.reloadData()
     }
 }
 
 private class PreviewVC: UIViewController {
     
-    var model: ToDoModel
-    init(model: ToDoModel) {
+    var model: TodoRepresentable
+    init(model: TodoRepresentable) {
         self.model = model
         super.init(nibName: nil, bundle: nil)
     }

@@ -35,13 +35,6 @@
          </FileRef>
       </Group>
       <Group
-         location = "group:Auth"
-         name = "Auth">
-         <FileRef
-            location = "group:Pincode">
-         </FileRef>
-      </Group>
-      <Group
          location = "group:Main"
          name = "Main">
          <FileRef

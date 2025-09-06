@@ -30,33 +30,5 @@ final public class AppLauncher {
                                      instructor: instructor,
                                      container: container)
         coordinator.start()
-        
-//        container.socketService().socketStatusSubject
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] status in
-//                guard let self, status == .connect else { return }
-//                if let device = container.printerManager().connectedDevice {
-//                    container.socketService().printerUpdated(with: device.toDict(isActive: true))
-//                }
-//            }
-//            .store(in: &cancellables)
-    }
-    
-    public func logOut() {
-//        do {
-//            try container.sessionService().logout()
-//            coordinator.start()
-//        } catch {
-//            print("Failed")
-//        }
-    }
-    
-    public func resetAll() {
-//        do {
-//            try container.sessionService().resetAll()
-//            coordinator.start()
-//        } catch {
-//            print("Failed")
-//        }
     }
 }

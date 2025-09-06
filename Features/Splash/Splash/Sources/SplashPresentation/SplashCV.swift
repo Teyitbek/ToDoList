@@ -3,16 +3,7 @@ import Fonts
 import UIKit
 import Base
 
-public protocol SplashContentView: UIView {
-    var imageView: UIImageView { get set }
-}
-
-public final class SplashCV: ContentView, SplashContentView {
-    public var imageView = UIImageView.build {
-        $0.contentMode = .scaleAspectFill
-        $0.image = .splash
-        $0.backgroundColor = .red
-    }
+public final class SplashCV: ContentView {
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,14 +21,12 @@ public final class SplashCV: ContentView, SplashContentView {
     }
     
     public override func setSubviews() {
-        addSubview(imageView)
     }
     
     public override func setConstraints() {
-        imageView.fillSuperview()
     }
     
     func setProperties() {
-        backgroundColor = .green
+        backgroundColor = .black
     }
 }

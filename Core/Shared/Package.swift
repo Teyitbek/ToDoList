@@ -15,8 +15,6 @@ let package = Package(
         .library(name: "Data", targets: ["Data"]),
         .library(name: "Domain", targets: ["Domain"]),
         .library(name: "Session", targets: ["Session"]),
-        .library(name: "EmptyPlaceholderView", targets: ["EmptyPlaceholderView"]),
-        .library(name: "CollectionView", targets: ["CollectionView"]),
         .library(name: "TableView", targets: ["TableView"]),
         .library(name: "Base", targets: ["Base"]),
         .library(name: "Assets", targets: ["Assets"]),
@@ -49,8 +47,6 @@ let package = Package(
                                              "Extensions"]),
         .target(name: "Session", dependencies: ["Domain"]),
         .target(name: "KeyboardManager"),
-        .target(name: "EmptyPlaceholderView", dependencies: ["Constants", "Fonts", "Extensions"]),
-        .target(name: "CollectionView", dependencies: ["Extensions", "Constants"]),
         .target(name: "TableView", dependencies: ["Extensions", "Constants"]),
         .target(name: "Base", dependencies: ["ActivityIndicator", "Domain", "KeyboardManager", "AppContainer"]),
         .target(name: "Assets", dependencies: ["Domain"], resources: [.process("Colors.xcassets")])

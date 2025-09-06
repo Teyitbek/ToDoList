@@ -3,7 +3,6 @@ import UIKit
 
 enum DeepLinkURLConstants {
     static let Settings = "settings"
-    static let Pincode = "pincode"
     static let SignUp = "signUp"
 }
 

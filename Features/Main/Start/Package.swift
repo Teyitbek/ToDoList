@@ -28,7 +28,6 @@ let package = Package(
                     .product(name: "Domain", package: "Shared"),
                     .product(name: "Extensions", package: "Shared"),
                     .product(name: "Fonts", package: "Shared"),
-                    .product(name: "CollectionView", package: "Shared"),
                     .product(name: "Base", package: "Shared"),
                     .product(name: "Constants", package: "Shared")]),
         .target(name: "StartDomain", dependencies: [.product(name: "Domain", package: "Shared")]),

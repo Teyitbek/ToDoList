@@ -52,33 +52,15 @@ public final class SplashContainer: ManagedContainer {
         }
     }
     
-    public var appInitUseCase: Factory<GetAppInitUseCase> {
+    public var appInitUseCase: Factory<String> {
         Factory(self) {
-            AppContainer.shared.getAppInitUseCase()
+            ""
         }
     }
     
     public var appInit: Factory<CurrentValueSubject<AppInit,Never>> {
         Factory(self) {
             AppContainer.shared.appInit()
-        }
-    }
-    
-    public var accountIndexRemoteDataSource: Factory<AccountIndexDataSource> {
-        Factory(self) {
-            AccountIndexDataSourceImpl(client: AppContainer.shared.client())
-        }
-    }
-    
-    public var getAccountIndexUseCase: Factory<GetAccountIndexUseCase> {
-        Factory(self) {
-            GetAccountIndexUseCaseImpl(repository: self.accountIndexRepository())
-        }
-    }
-    
-    public var accountIndexRepository: Factory<AccountIndexRepository> {
-        Factory(self) {
-            AccountIndexRepositoryImpl(dataSource: self.accountIndexRemoteDataSource())
         }
     }
     

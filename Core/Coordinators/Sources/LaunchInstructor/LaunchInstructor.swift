@@ -11,14 +11,8 @@ public final class LaunchInstructor: Instructor {
     
     public func startOption() -> LaunchOption {
         guard isSplashShown else {
-//            return sessionService.retrieveLocation() == nil ? .location : .splash
             return .splash
         }
-//        if sessionService.locationIsAvailable {
-//            return sessionService.accessTokenIsAvailable ? .main : .auth
-//        } else {
-//            return .location
-//        }
         return .main
     }
 }

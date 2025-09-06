@@ -37,7 +37,6 @@ public final class AppCoordinator: BaseCoordinator {
     private func runFlow() {
         switch instructor.startOption() {
         case .splash: runSplashFlow()
-        case .auth: runAuthFlow()
         case .main: runMainFlow()
         }
     }
@@ -54,18 +53,6 @@ public final class AppCoordinator: BaseCoordinator {
         
         addDependency(coordinator)
         coordinator.start()
-    }
-    
-    private func runAuthFlow() {
-//        var coordinator = coordinatorFactory.makeAuthCoordinator(router: router, sessionService: container.sessionService())
-//        
-//        coordinator.finishFlow = { [weak self, weak coordinator] in
-//            self?.runFlow()
-//            self?.removeDependency(coordinator)
-//        }
-//        
-//        addDependency(coordinator)
-//        coordinator.start()
     }
     
     private func runMainFlow() {

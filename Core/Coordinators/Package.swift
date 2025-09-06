@@ -15,7 +15,6 @@ let package = Package(
     ],
     dependencies: [.package(name: "Splash", path: "Splash"),
                    .package(name: "Start", path: "Start"),
-                   .package(name: "Pincode", path: "Pincode"),
                    .package(name: "Details", path: "Details"),
                    .package(name: "Shared", path: "Shared")],
     targets: [
@@ -23,12 +22,8 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(name: "AppCoordinator",
                 dependencies: ["SplashCoordinator",
-                               "AuthCoordinator",
                                "LaunchInstructor",
                                "MainCoordinator",
-                               "Coordinator"]),
-        .target(name: "AuthCoordinator",
-                dependencies: ["Pincode",
                                "Coordinator"]),
         .target(name: "SplashCoordinator",
                 dependencies: ["Splash",

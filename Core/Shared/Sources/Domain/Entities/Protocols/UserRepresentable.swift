@@ -8,6 +8,4 @@ public protocol UserRepresentable: Sendable {
     var contactDetails: String? { get set }
     var active: Bool { get set }
     var location: UserLocationable? { get set }
-    
-    func getRole() -> UserRole
 }

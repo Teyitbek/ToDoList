@@ -11,7 +11,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var cancellables = Set<AnyCancellable>()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-//        FirebaseApp.configure()
         window = Window()
         window?.makeKeyAndVisible()
         

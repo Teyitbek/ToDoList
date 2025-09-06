@@ -15,68 +15,29 @@ public final class StartContainer: ManagedContainer {
         }
     }
     
-//    public var saveSelectedLanguageUseCase: Factory<SaveSelectedLanguageUseCase> {
-//        Factory(self) {
-//            AppContainer.shared.saveSelectedLanguageUseCase()
-//        }
-//    }
-//    
-//    public var getRemoteLanguagesUseCase: Factory<GetRemoteLanguagesUseCase> {
-//        Factory(self) {
-//            AppContainer.shared.getRemoteLanguagesUseCase()
-//        }
-//    }
-    
-    public var bannerDataSource: Factory<BannerRemoteDataSource> {
-        Factory(self) {
-            BannerRemoteDataSourceImpl(client: AppContainer.shared.client())
-        }
-        .singleton
-    }
-    
-    public var bannerRepository: Factory<BannerRepository> {
-        Factory(self) {
-            BannerRepositoryImpl(remoteDataSource: self.bannerDataSource())
-        }
-        .singleton
-    }
-    
-//    public var getBannersUseCase: Factory<GetBannersUseCase> {
-//        Factory(self) {
-//            GetBannersUseCaseImpl(repository: self.bannerRepository())
-//        }
-//        .singleton
-//    }
-    
-//    public var getLabelsUseCase: Factory<GetLabelsUseCase> {
-//        Factory(self) {
-//            AppContainer.shared.getLabelsUseCase()
-//        }
-//    }
-//    
-//    public var saveLabelsUseCase: Factory<SaveLabelsUseCase> {
-//        Factory(self) {
-//            AppContainer.shared.saveLabelsUseCase()
-//        }
-//    }
-//    
-//    public var socketService: Factory<SocketServicing> {
-//        Factory(self) {
-//            AppContainer.shared.socketService()
-//        }
-//    }
-    
     public var sessionService: Factory<SessionManaging> {
         Factory(self) {
             AppContainer.shared.sessionService()
         }
     }
     
-//    public var printerManager: Factory<PrinterManager> {
-//        Factory(self) {
-//            AppContainer.shared.printerManager()
-//        }
-//    }
+    public var todoRemoteDataSource: Factory<TodoRemoteDataSource> {
+        Factory(self) {
+            TodoRemoteDataSourceImpl(client: AppContainer.shared.client())
+        }
+    }
+    
+    public var todoRepository: Factory<TodoRepository> {
+        Factory(self) {
+            TodoRepositoryImpl(remoteDataSource: self.todoRemoteDataSource())
+        }
+    }
+    
+    public var todoUseCase: Factory<TodoUseCase> {
+        Factory(self) {
+            TodoUseCaseImpl(repository: self.todoRepository())
+        }
+    }
     
     public init() {}
 }

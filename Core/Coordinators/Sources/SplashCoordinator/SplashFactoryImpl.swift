@@ -11,16 +11,12 @@ public final class SplashFactoryImpl: SplashFactory {
     
     public func makeSplashModule() -> SplashVC {
         let container = SplashContainer()
-        let viewModel = SplashVM(
-                                 appType: container.appType(),
+        let viewModel = SplashVM(appType: container.appType(),
                                  appVersion: container.appVersion(),
-                                 useCases: (container.deviceUIDUseCase(),
-                                            container.appInitUseCase(),
-                                            container.getAccountIndexUseCase()),
+                                 useCases: (),
                                  sessionService: container.sessionService(),
                                  appInitSubject: container.appInit())
         let contentView = SplashCV()
-        viewModel.onSetDeviceUID = container.setDeviceUID
         let vc = SplashVC(contentView: contentView, viewModel: viewModel)
         return vc
     }

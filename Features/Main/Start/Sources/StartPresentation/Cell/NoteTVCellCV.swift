@@ -4,7 +4,7 @@ import Fonts
 import UIKit
 
 public class NoteTVCellCV: UIView {
-    lazy var checkImageView = makeImageView()
+    lazy var selectButton = makeButton()
     private lazy var stackView = makeStackView()
     lazy var titleLabel = makeTitleLabel()
     lazy var subtitleLabel = makeSubTitleLabel()
@@ -25,7 +25,7 @@ public class NoteTVCellCV: UIView {
 
 extension NoteTVCellCV: Customizable {
     public func setSubviews() {
-        addSubview(checkImageView)
+        addSubview(selectButton)
         addSubview(stackView)
         stackView.addArrangedSubviews(
             titleLabel,
@@ -36,7 +36,7 @@ extension NoteTVCellCV: Customizable {
     }
     
     public func setConstraints() {
-        checkImageView.anchor(
+        selectButton.anchor(
             .centerY(titleLabel.centerYAnchor),
             .leading(leadingAnchor, constant: Constants.UI.padding20),
             .width(Constants.UI.padding24),
@@ -45,7 +45,7 @@ extension NoteTVCellCV: Customizable {
         
         stackView.anchor(
             .top(topAnchor, constant: Constants.UI.padding8),
-            .leading(checkImageView.trailingAnchor, constant: Constants.UI.padding8),
+            .leading(selectButton.trailingAnchor, constant: Constants.UI.padding10),
             .trailing(trailingAnchor, constant: Constants.UI.padding20),
             .bottom(bottomAnchor, constant: Constants.UI.padding8)
         )
@@ -63,9 +63,9 @@ extension NoteTVCellCV: Customizable {
     }
 }
 private extension NoteTVCellCV {
-    func makeImageView() -> UIImageView {
-        let imageView = UIImageView()
-        return imageView
+    func makeButton() -> UIButton {
+        let button = UIButton(type: .custom)
+        return button
     }
     
     func makeStackView() -> UIStackView {
