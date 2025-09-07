@@ -21,21 +21,23 @@ public final class StartContainer: ManagedContainer {
         }
     }
     
-    public var todoRemoteDataSource: Factory<TodoRemoteDataSource> {
+    // MARK: - Todo
+    
+    public var todosDataSource: Factory<TodosDataSource> {
         Factory(self) {
-            TodoRemoteDataSourceImpl(client: AppContainer.shared.client())
+            TodosDataSourceImpl(client: AppContainer.shared.client())
         }
     }
     
-    public var todoRepository: Factory<TodoRepository> {
+    public var todosRepository: Factory<TodosRepository> {
         Factory(self) {
-            TodoRepositoryImpl(remoteDataSource: self.todoRemoteDataSource())
+            TodosRepositoryImpl(dataSource: self.todosDataSource())
         }
     }
     
-    public var todoUseCase: Factory<TodoUseCase> {
+    public var todosUseCase: Factory<TodosUseCase> {
         Factory(self) {
-            TodoUseCaseImpl(repository: self.todoRepository())
+            TodosUseCaseImpl(repository: self.todosRepository())
         }
     }
     

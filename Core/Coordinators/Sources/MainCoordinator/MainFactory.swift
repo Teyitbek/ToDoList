@@ -18,7 +18,7 @@ public final class MainModuleFactory: MainFactory {
         let container = StartContainer()
         let contentView = StartCV()
         let viewModel = StartVM(sessionService: container.sessionService(),
-                                todoUseCase: container.todoUseCase())
+                                todosUseCase: container.todosUseCase())
         let viewController = StartVC(contentView: contentView, viewModel: viewModel)
         return viewController
     }

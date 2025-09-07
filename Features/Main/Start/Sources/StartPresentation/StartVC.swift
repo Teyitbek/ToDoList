@@ -56,6 +56,16 @@ public final class StartVC: ViewController<StartCV, StartVM> {
                 self.dismissActivity()
             }
             .store(in: &cancellables)
+        
+        viewModel.todosSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] model in
+                guard let self = self else { return }
+                self.dismissActivity()
+                self.viewModel.initialTodoModel = model
+                self.contentView.tableView.reloadData()
+            }
+            .store(in: &cancellables)
     }
 }
 

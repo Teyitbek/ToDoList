@@ -61,35 +61,7 @@ public final class AppCoordinator: BaseCoordinator {
         coordinator.finishFlow = { [weak self, weak coordinator] in
             self?.removeDependency(coordinator)
         }
-//        coordinator.orderFlow = { [weak self] in
-//            self?.runOrderFlow()
-//        }
         addDependency(coordinator)
         coordinator.start()
-    }
-    
-    private func runProductDetailsFlow(navigationController: NavigationController, product: ProductRepresentable, type: ProductDetailType) {
-//        var coordinator = coordinatorFactory.makeProductDetailsCoordinator(router: router,
-//                                                                           navigationController: navigationController,
-//                                                                           product: product,
-//                                                                           type: type)
-//        coordinator.finishFlow = { [weak self, weak coordinator, weak router] in
-//            router?.popModule()
-//            self?.removeDependency(coordinator)
-//        }
-//        
-//        addDependency(coordinator)
-//        coordinator.start()
-    }
-    
-    private func runOrderFlow() {
-//        var coordinator = coordinatorFactory.makeCheckoutCoordinator(router: router, window: self.window)
-//        
-//        coordinator.finishFlow = { [weak self, weak coordinator] in
-//            self?.runKioskFlow()
-//            self?.removeDependency(coordinator)
-//        }
-//        addDependency(coordinator)
-//        coordinator.start()
     }
 }

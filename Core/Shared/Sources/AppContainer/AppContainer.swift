@@ -132,10 +132,4 @@ public final class AppContainer: SharedContainer {
         }
         .singleton
     }
-    
-//    public var getTododsUseCase: Factory<TodoUseCase> {
-//        Factory(self) {
-//            GetTodoUseCaseImpl(repository: <#T##any TodoRemoteRepository#>)
-//        }
-//    }
 }

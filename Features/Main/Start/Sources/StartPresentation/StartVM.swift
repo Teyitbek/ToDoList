@@ -24,11 +24,11 @@ public final class StartVM: ViewModel, StartViewModel {
     public var todosSubject = CurrentValueSubject<[TodoRepresentable], Never>([])
     
     public var sessionService: SessionManaging
-    public var todoUseCase: TodoUseCase
+    public var todosUseCase: TodosUseCase
     
-    public init(sessionService: SessionManaging, todoUseCase: TodoUseCase) {
+    public init(sessionService: SessionManaging, todosUseCase: TodosUseCase) {
         self.sessionService = sessionService
-        self.todoUseCase = todoUseCase
+        self.todosUseCase = todosUseCase
         super.init()
     }
     
@@ -43,7 +43,7 @@ public final class StartVM: ViewModel, StartViewModel {
         
         getDataTask = Task {
             do {
-                let todo = try await todoUseCase.execute()
+                let todo = try await todosUseCase.execute()
                 todosSubject.send(todo)
                 activityIndicatorIsHiddenSubject.send(true)
             } catch {
