@@ -8,27 +8,31 @@ import Base
 
 public protocol StartViewModel {
     var onStartAction: CompletionClosure? { get set }
-    var onAddNewNoteAction: CompletionClosure? { get set }
-    var onDetailsAction: CompletionClosure? { get set }
+    var onDetailsAction: ((TodoRepresentable?) -> Void)? { get set }
     
     @MainActor
     func getData()
+    
+    @MainActor
+    func deleteTodo(with id: Int)
 }
+
+public typealias UseCases = (getTodos: TodosUseCase, deleteTodo: DeleteTodoUseCase)
 
 public final class StartVM: ViewModel, StartViewModel {
     public var onStartAction: CompletionClosure?
-    public var onAddNewNoteAction: CompletionClosure?
-    public var onDetailsAction: CompletionClosure?
+    public var onDetailsAction: ((TodoRepresentable?) -> Void)?
     
     public var getDataTask: Task<Void, Never>?
     public var todosSubject = CurrentValueSubject<[TodoRepresentable], Never>([])
+    public var deleteSubject = PassthroughSubject<DeleteTodoResponse, Never>()
     
     public var sessionService: SessionManaging
-    public var todosUseCase: TodosUseCase
+    public var useCases: UseCases
     
-    public init(sessionService: SessionManaging, todosUseCase: TodosUseCase) {
+    public init(sessionService: SessionManaging, useCases: UseCases) {
         self.sessionService = sessionService
-        self.todosUseCase = todosUseCase
+        self.useCases = useCases
         super.init()
     }
     
@@ -43,8 +47,24 @@ public final class StartVM: ViewModel, StartViewModel {
         
         getDataTask = Task {
             do {
-                let todo = try await todosUseCase.execute()
+                let todo = try await useCases.getTodos.execute()
                 todosSubject.send(todo)
+                activityIndicatorIsHiddenSubject.send(true)
+            } catch {
+                errorSubject.send(error)
+                activityIndicatorIsHiddenSubject.send(true)
+            }
+        }
+    }
+    
+    @MainActor
+    public func deleteTodo(with id: Int) {
+        activityIndicatorIsHiddenSubject.send(false)
+        
+        getDataTask = Task {
+            do {
+                let todo = try await useCases.deleteTodo.execute(with: id)
+                deleteSubject.send(todo)
                 activityIndicatorIsHiddenSubject.send(true)
             } catch {
                 errorSubject.send(error)

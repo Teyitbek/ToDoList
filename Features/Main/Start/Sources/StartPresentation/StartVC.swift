@@ -43,7 +43,6 @@ public final class StartVC: ViewController<StartCV, StartVM> {
         contentView.tableView.delegate = self
         contentView.tableView.dataSource = self
         
-        contentView.bottomView.notestLabel.text = "\(26) notes"
         contentView.bottomView.addNewNoteButton.addTarget(self, action: #selector(onAddNewNoteAction), for: .touchUpInside)
     }
     
@@ -63,7 +62,18 @@ public final class StartVC: ViewController<StartCV, StartVM> {
                 guard let self = self else { return }
                 self.dismissActivity()
                 self.viewModel.initialTodoModel = model
+                self.viewModel.todoModel = model
+                self.contentView.bottomView.notestLabel.text = "\(viewModel.initialTodoModel.count) notes"
                 self.contentView.tableView.reloadData()
+            }
+            .store(in: &cancellables)
+        
+        viewModel.deleteSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] error in
+                guard let self = self else { return }
+                self.dismissActivity()
+                print("Successfully deleted todo")
             }
             .store(in: &cancellables)
     }
@@ -72,11 +82,11 @@ public final class StartVC: ViewController<StartCV, StartVM> {
 @objc
 private extension StartVC {
     func onAddNewNoteAction() {
-        viewModel.onAddNewNoteAction?()
+        viewModel.onDetailsAction?(nil)
     }
 }
 extension StartVC: UISearchControllerDelegate, UISearchBarDelegate {
-    func setupSearchController() {
+    private func setupSearchController() {
         let search = UISearchController(searchResultsController: nil)
         search.delegate = self
         search.searchBar.delegate = self
@@ -111,24 +121,25 @@ extension StartVC: UISearchControllerDelegate, UISearchBarDelegate {
         contentView.tableView.reloadData()
     }
 }
+
 extension StartVC: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.isSearchingMode ? viewModel.todoModel.count : viewModel.initialTodoModel.count
+        viewModel.todoModel.count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: NoteTVCell = tableView.dequeueReusableCell(for: indexPath)
-        cell.setup(with: viewModel.isSearchingMode ? viewModel.todoModel[indexPath.row] : viewModel.initialTodoModel[indexPath.row])
+        cell.setup(with: viewModel.todoModel[indexPath.row])
         cell.delegate = self
         return cell
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.onDetailsAction?()
+        viewModel.onDetailsAction?(viewModel.todoModel[indexPath.row])
     }
     
     public func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let todo = viewModel.isSearchingMode ? viewModel.todoModel[indexPath.row] : viewModel.initialTodoModel[indexPath.row]
+        let todo = viewModel.todoModel[indexPath.row]
         return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: {
             return PreviewVC(model: todo)
         }, actionProvider: { _ in
@@ -139,6 +150,7 @@ extension StartVC: UITableViewDelegate, UITableViewDataSource {
                 print("Share tapped")
             }
             let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                self.viewModel.deleteTodo(with: todo.id)
                 print("Delete tapped")
             }
             return UIMenu(title: "", children: [edit, share, delete])
@@ -163,14 +175,14 @@ extension StartVC: UITableViewDelegate, UITableViewDataSource {
 extension StartVC: NoteTVCellDelegate {
     func didTap(_ cell: NoteTVCell) {
         guard let indexPath = contentView.tableView.indexPath(for: cell) else { return }
-//        viewModel.isSearchingMode ? viewModel.todoModel[indexPath.row].completed.toggle() : viewModel.initialTodoModel[indexPath.row].completed.toggle()
+        viewModel.todoModel[indexPath.row].completed.toggle()
         contentView.tableView.reloadData()
     }
 }
 
 private class PreviewVC: UIViewController {
-    
     var model: TodoRepresentable
+    
     init(model: TodoRepresentable) {
         self.model = model
         super.init(nibName: nil, bundle: nil)

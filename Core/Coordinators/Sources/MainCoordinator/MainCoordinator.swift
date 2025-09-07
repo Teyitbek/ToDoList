@@ -27,8 +27,8 @@ public final class MainCoordinator: BaseCoordinator, MainCoordinatorResult {
         router.setRootModule(module, hideBar: false, hideNavigationBar: false)
     }
     
-    private func showDetailsModule() {
-        let module = factory.makeDetailsmodule()
+    private func showDetailsModule(_ todo: TodoRepresentable?) {
+        let module = factory.makeDetailsmodule(todo: todo)
         router.push(module, hideBar: true)
     }
 }

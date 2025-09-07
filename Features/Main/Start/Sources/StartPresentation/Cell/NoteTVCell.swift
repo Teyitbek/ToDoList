@@ -22,13 +22,38 @@ open class NoteTVCell: TableViewCell<NoteTVCellCV> {
     override public func prepareForReuse() {
         super.prepareForReuse()
         mainContentView.selectButton.setImage(nil, for: .normal)
+        mainContentView.doneView.isHidden = true
     }
     
     func setup(with model: TodoRepresentable) {
         mainContentView.selectButton.setImage(model.completed ? .circleSelected : .circleUnselected, for: .normal)
         mainContentView.titleLabel.text = model.todo
-        mainContentView.subtitleLabel.text = "Valet data can only be accessed while the device is unlocked. This is recommended for data that only needs to be accessible while the application is in the foreground. Valet data with this attribute will never migrate to a new device, so these items will be missing after a backup is restored to a new device."
-        mainContentView.dateLabel.text = "5 september 2025"
+        mainContentView.subtitleLabel.text = "Valet data can only be accessed while the device is unlocked..."
+        mainContentView.dateLabel.text = "5 September 2025"
+
+        mainContentView.doneView.isHidden = !model.completed
+        mainContentView.titleLabel.alpha = model.completed ? 0.5 : 1
+        mainContentView.subtitleLabel.alpha = model.completed ? 0.5 : 1
+        mainContentView.dateLabel.alpha = model.completed ? 0.5 : 1
+
+        mainContentView.titleLabel.layoutIfNeeded()
+        mainContentView.doneViewConstraints?.width?.constant = calculateTitleWidth()
+    }
+    
+    private func calculateTitleWidth() -> CGFloat {
+        guard let font = mainContentView.titleLabel.font else { return 0 }
+        let text = mainContentView.titleLabel.text ?? ""
+        
+        let maxWidth = mainContentView.titleLabel.frame.width > 0 ? mainContentView.titleLabel.frame.width : mainContentView.titleLabel.intrinsicContentSize.width
+        let maxSize = CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
+        
+        let boundingRect = NSString(string: text).boundingRect(
+            with: maxSize,
+            options: [.usesLineFragmentOrigin, .usesFontLeading],
+            attributes: [.font: font],
+            context: nil
+        )
+        return ceil(boundingRect.width) + 10
     }
 }
 @objc

@@ -22,7 +22,6 @@ public final class StartContainer: ManagedContainer {
     }
     
     // MARK: - Todo
-    
     public var todosDataSource: Factory<TodosDataSource> {
         Factory(self) {
             TodosDataSourceImpl(client: AppContainer.shared.client())
@@ -38,6 +37,25 @@ public final class StartContainer: ManagedContainer {
     public var todosUseCase: Factory<TodosUseCase> {
         Factory(self) {
             TodosUseCaseImpl(repository: self.todosRepository())
+        }
+    }
+    
+    // MARK: - Delete Todo
+    public var deleteTodoDataSource: Factory<DeleteTodoDataSource> {
+        Factory(self) {
+            DeleteTodoDataSourceImpl(client: AppContainer.shared.client())
+        }
+    }
+    
+    public var deleteTodoRepository: Factory<DeleteTodoRepository> {
+        Factory(self) {
+            DeleteTodoRepositoryImpl(dataSource: self.deleteTodoDataSource())
+        }
+    }
+    
+    public var deleteTodoUseCase: Factory<DeleteTodoUseCase> {
+        Factory(self) {
+            DeleteTodoUseCaseImpl(repository: self.deleteTodoRepository())
         }
     }
     

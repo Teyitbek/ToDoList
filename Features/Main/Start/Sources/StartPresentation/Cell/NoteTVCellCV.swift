@@ -7,9 +7,12 @@ public class NoteTVCellCV: UIView {
     lazy var selectButton = makeButton()
     private lazy var stackView = makeStackView()
     lazy var titleLabel = makeTitleLabel()
+    lazy var doneView = makeLineView(alpha: 0.3)
     lazy var subtitleLabel = makeSubTitleLabel()
     lazy var dateLabel = makeSubTitleLabel()
-    private lazy var bottomLineView = makeBottomLineView()
+    private lazy var bottomLineView = makeLineView(alpha: 0.6)
+    
+    var doneViewConstraints: AnchoredConstraints?
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,6 +35,7 @@ extension NoteTVCellCV: Customizable {
             subtitleLabel,
             dateLabel
         )
+        addSubview(doneView)
         addSubview(bottomLineView)
     }
     
@@ -44,11 +48,19 @@ extension NoteTVCellCV: Customizable {
         )
         
         stackView.anchor(
-            .top(topAnchor, constant: Constants.UI.padding8),
-            .leading(selectButton.trailingAnchor, constant: Constants.UI.padding10),
+            .top(topAnchor, constant: Constants.UI.padding12),
+            .leading(selectButton.trailingAnchor, constant: Constants.UI.padding12),
             .trailing(trailingAnchor, constant: Constants.UI.padding20),
             .bottom(bottomAnchor, constant: Constants.UI.padding8)
         )
+        
+        doneViewConstraints = doneView.anchor(
+            .centerY(titleLabel.centerYAnchor),
+            .leading(titleLabel.leadingAnchor, constant: -Constants.UI.padding4),
+            .height(1)
+        )
+        doneViewConstraints?.width = doneView.widthAnchor.constraint(equalToConstant: 0)
+        doneViewConstraints?.width?.isActive = true
         
         bottomLineView.anchor(
             .leading(leadingAnchor, constant: Constants.UI.padding20),
@@ -62,6 +74,7 @@ extension NoteTVCellCV: Customizable {
         backgroundColor = .clear
     }
 }
+
 private extension NoteTVCellCV {
     func makeButton() -> UIButton {
         let button = UIButton(type: .custom)
@@ -79,6 +92,7 @@ private extension NoteTVCellCV {
         let label = UILabel()
         label.font = Fonts.murecho.font(forTextStyle: .title3)
         label.textColor = .white
+        label.numberOfLines = 0
         return label
     }
     
@@ -90,7 +104,7 @@ private extension NoteTVCellCV {
         return label
     }
     
-    func makeBottomLineView() -> UIView {
-        return UIView(backgroundColor: .white.withAlphaComponent(0.6))
+    func makeLineView(alpha: CGFloat) -> UIView {
+        return UIView(backgroundColor: .white.withAlphaComponent(alpha))
     }
 }

@@ -54,6 +54,7 @@ private extension PreviewCV {
         let label = UILabel()
         label.font = Fonts.murecho.font(forTextStyle: .title3)
         label.textColor = .white
+        label.numberOfLines = 0
         return label
     }
     

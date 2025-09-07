@@ -8,7 +8,7 @@ import UIKit
 
 public protocol MainFactory {
     func makeStartModule() -> StartVC
-    func makeDetailsmodule() -> DetailsVC
+    func makeDetailsmodule(todo: TodoRepresentable?) -> DetailsVC
 }
 
 public final class MainModuleFactory: MainFactory {
@@ -18,15 +18,17 @@ public final class MainModuleFactory: MainFactory {
         let container = StartContainer()
         let contentView = StartCV()
         let viewModel = StartVM(sessionService: container.sessionService(),
-                                todosUseCase: container.todosUseCase())
+                                useCases: (container.todosUseCase(),
+                                           container.deleteTodoUseCase())
+        )
         let viewController = StartVC(contentView: contentView, viewModel: viewModel)
         return viewController
     }
     
-    public func makeDetailsmodule() -> DetailsVC {
+    public func makeDetailsmodule(todo: TodoRepresentable?) -> DetailsVC {
         let container = DetailsContainer()
         let contentView = DetailsCV()
-        let viewModel = DetailsVM(sessionService: container.sessionService(), useCases: ())
+        let viewModel = DetailsVM(sessionService: container.sessionService(), todo: todo)
         let viewController = DetailsVC(contentView: contentView, viewModel: viewModel)
         return viewController
     }
