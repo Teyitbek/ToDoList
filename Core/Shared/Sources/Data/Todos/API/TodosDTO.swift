@@ -1,10 +1,10 @@
 import Domain
 
 public struct TodosDTO: Codable, TodosDomainMappable {
-    public var todo: String
-    public var id: Int
+    public var todo: String?
+    public var id: Int64
     public var completed: Bool
-    public var userId: Int
+    public var userId: Int64
     
     public init(from todos: TodoRepresentable) {
         self.todo = todos.todo

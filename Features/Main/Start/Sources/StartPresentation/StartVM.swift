@@ -12,10 +12,12 @@ public protocol StartViewModel {
     var onDetailsAction: ((TodoRepresentable?) -> Void)? { get set }
     
     @MainActor
-    func getData()
+    func getRemoteData()
     
     @MainActor
     func deleteTodo(with id: Int)
+    
+    func getLocalData()
 }
 
 public typealias UseCases = (getTodos: TodosUseCase, deleteTodo: DeleteTodoUseCase)
@@ -45,15 +47,17 @@ public final class StartVM: ViewModel, StartViewModel {
     var initialTodoModel: [TodoRepresentable] = []
     
     @MainActor
-    public func getData() {
+    public func getRemoteData() {
         activityIndicatorIsHiddenSubject.send(false)
         
         getDataTask = Task {
             do {
                 let todo = try await useCases.getTodos.execute()
                 todosSubject.send(todo)
+                coreDataManager.model.removeAll()
+                todo.forEach { coreDataManager.add($0) }
+                dump(coreDataManager.model)
                 activityIndicatorIsHiddenSubject.send(true)
-//                todo.forEach { coreDataManager.add($0) }
             } catch {
                 errorSubject.send(error)
                 activityIndicatorIsHiddenSubject.send(true)
@@ -70,10 +74,20 @@ public final class StartVM: ViewModel, StartViewModel {
                 let todo = try await useCases.deleteTodo.execute(with: id)
                 deleteSubject.send(todo)
                 activityIndicatorIsHiddenSubject.send(true)
+                coreDataManager.model.removeAll { todo.id == $0.id }
             } catch {
                 errorSubject.send(error)
                 activityIndicatorIsHiddenSubject.send(true)
             }
         }
+    }
+    
+    public func getLocalData() {
+        activityIndicatorIsHiddenSubject.send(false)
+        coreDataManager.fetchAllModel()
+        dump(coreDataManager.model)
+        coreDataManager.model.forEach { todoModel.append($0) }
+        todosSubject.send(todoModel)
+        activityIndicatorIsHiddenSubject.send(true)
     }
 }

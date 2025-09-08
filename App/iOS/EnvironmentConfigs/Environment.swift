@@ -3,9 +3,6 @@ import Foundation
 enum PlistKey: String, CaseIterable {
     case baseAPIURL = "BASE_URL"
     case appstoreLink = "APPSTORE_LINK"
-    case sentryDSN = "SENTRY_DSN"
-    case stripeRedirectURLScheme = "STRIPE_REDIRECT_URL_SCHEME"
-    case socketURL = "SOCKET_BASE_URL"
 }
 
 enum Environment {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C62A160C2E6EDD8400739DB0 /* TodoModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C62A160A2E6EDD8400739DB0 /* TodoModel.xcdatamodeld */; };
 		CE4A2F1227314261009144DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4A2F1127314261009144DF /* AppDelegate.swift */; };
 		CE4A2F1B27314262009144DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE4A2F1A27314262009144DF /* Assets.xcassets */; };
 		CE4A2F1E27314262009144DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE4A2F1C27314262009144DF /* LaunchScreen.storyboard */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C62A160B2E6EDD8400739DB0 /* TodoModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TodoModel.xcdatamodel; sourceTree = "<group>"; };
 		CE1781E32BAC882F0079F3F9 /* EnvironmentConfigs.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = EnvironmentConfigs.plist; sourceTree = "<group>"; };
 		CE1781E52BAC88EE0079F3F9 /* EnvironmentConfigs.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = EnvironmentConfigs.plist; sourceTree = "<group>"; };
 		CE1781E62BAC88F00079F3F9 /* EnvironmentConfigs.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = EnvironmentConfigs.plist; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 		CE4A2F0527314261009144DF = {
 			isa = PBXGroup;
 			children = (
+				C62A160A2E6EDD8400739DB0 /* TodoModel.xcdatamodeld */,
 				CE4A2F1027314261009144DF /* iOS */,
 				CE4A2F0F27314261009144DF /* Products */,
 			);
@@ -323,6 +326,7 @@
 			files = (
 				CE6D4D5027339DA200F94F2A /* Environment.swift in Sources */,
 				CEC7C93F2D79BC2F004A2365 /* BuildConfigs.swift in Sources */,
+				C62A160C2E6EDD8400739DB0 /* TodoModel.xcdatamodeld in Sources */,
 				CE4A2F1227314261009144DF /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -518,6 +522,19 @@
 			productName = AppLauncher;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		C62A160A2E6EDD8400739DB0 /* TodoModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C62A160B2E6EDD8400739DB0 /* TodoModel.xcdatamodel */,
+			);
+			currentVersion = C62A160B2E6EDD8400739DB0 /* TodoModel.xcdatamodel */;
+			path = TodoModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = CE4A2F0627314261009144DF /* Project object */;
 }

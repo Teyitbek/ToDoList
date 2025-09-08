@@ -5,7 +5,6 @@ public extension Decodable {
         guard let value = try? JSONDecoder().decode(Self.self, from: jsonData) else {
             return nil
         }
-        
         self = value
     }
 }

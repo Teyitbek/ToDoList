@@ -1,6 +1,7 @@
 import ActivityIndicator
 import Constants
 import Combine
+import CoreData
 import Domain
 import UIKit
 import Fonts
@@ -11,7 +12,7 @@ public final class StartVC: ViewController<StartCV, StartVM> {
     public override func viewDidLoad() {
         super.viewDidLoad()
         presentActivity()
-        viewModel.getData()
+        viewModel.getLocalData()
         setupSearchController()
     }
     
@@ -43,6 +44,7 @@ public final class StartVC: ViewController<StartCV, StartVM> {
         contentView.tableView.delegate = self
         contentView.tableView.dataSource = self
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Reset", style: .done, target: self, action: #selector(onResetAction))
         contentView.bottomView.addNewNoteButton.addTarget(self, action: #selector(onAddNewNoteAction), for: .touchUpInside)
     }
     
@@ -86,6 +88,14 @@ public final class StartVC: ViewController<StartCV, StartVM> {
 
 @objc
 private extension StartVC {
+    func onResetAction() {
+        let alert = UIAlertController(title: "Reset", message: "Are you sure you want to reset all changes?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
+            self?.viewModel.getRemoteData()
+        }))
+        present(alert, animated: true)
+    }
     func onAddNewNoteAction() {
         viewModel.onDetailsAction?(nil)
     }
@@ -116,7 +126,7 @@ extension StartVC: UISearchControllerDelegate, UISearchBarDelegate {
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.todoModel = []
         for item in viewModel.initialTodoModel {
-            if item.todo.lowercased().contains(searchText.lowercased()) {
+            if ((item.todo?.lowercased().contains(searchText.lowercased())) != nil) {
                 viewModel.todoModel.append(item)
             }
         }
@@ -155,7 +165,7 @@ extension StartVC: UITableViewDelegate, UITableViewDataSource {
                 print("Share tapped")
             }
             let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                self.viewModel.deleteTodo(with: todo.id)
+                self.viewModel.deleteTodo(with: Int(todo.id))
             }
             return UIMenu(title: "", children: [edit, share, delete])
         })
