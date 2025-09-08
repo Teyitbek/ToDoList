@@ -17,7 +17,8 @@ public final class MainModuleFactory: MainFactory {
     public func makeStartModule() -> StartVC {
         let container = StartContainer()
         let contentView = StartCV()
-        let viewModel = StartVM(sessionService: container.sessionService(),
+        let viewModel = StartVM(coreDataManager: container.coreDataManager(),
+                                sessionService: container.sessionService(),
                                 useCases: (container.todosUseCase(),
                                            container.deleteTodoUseCase())
         )

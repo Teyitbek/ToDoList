@@ -4,6 +4,7 @@ import Foundation
 import Data
 import Domain
 import StartDomain
+import StartData
 import Base
 
 public protocol StartViewModel {
@@ -27,10 +28,12 @@ public final class StartVM: ViewModel, StartViewModel {
     public var todosSubject = CurrentValueSubject<[TodoRepresentable], Never>([])
     public var deleteSubject = PassthroughSubject<DeleteTodoResponse, Never>()
     
+    public var coreDataManager: CoreDataManager
     public var sessionService: SessionManaging
     public var useCases: UseCases
     
-    public init(sessionService: SessionManaging, useCases: UseCases) {
+    public init(coreDataManager: CoreDataManager, sessionService: SessionManaging, useCases: UseCases) {
+        self.coreDataManager = coreDataManager
         self.sessionService = sessionService
         self.useCases = useCases
         super.init()
@@ -50,6 +53,7 @@ public final class StartVM: ViewModel, StartViewModel {
                 let todo = try await useCases.getTodos.execute()
                 todosSubject.send(todo)
                 activityIndicatorIsHiddenSubject.send(true)
+//                todo.forEach { coreDataManager.add($0) }
             } catch {
                 errorSubject.send(error)
                 activityIndicatorIsHiddenSubject.send(true)

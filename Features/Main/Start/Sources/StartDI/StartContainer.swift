@@ -59,5 +59,12 @@ public final class StartContainer: ManagedContainer {
         }
     }
     
+    // MARK: - Core Data
+    public var coreDataManager: Factory<CoreDataManager> {
+        Factory(self) {
+            AppContainer.shared.coreDataManager()
+        }
+    }
+    
     public init() {}
 }

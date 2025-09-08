@@ -70,10 +70,15 @@ public final class StartVC: ViewController<StartCV, StartVM> {
         
         viewModel.deleteSubject
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] error in
+            .sink { [weak self] todo in
                 guard let self = self else { return }
                 self.dismissActivity()
-                print("Successfully deleted todo")
+                guard todo.isDeleted else { return }
+                self.viewModel.initialTodoModel.removeAll { $0.id == todo.id }
+                self.viewModel.todoModel.removeAll { $0.id == todo.id }
+                self.viewModel.coreDataManager.model.removeAll { $0.id == todo.id }
+                self.contentView.bottomView.notestLabel.text = "\(viewModel.initialTodoModel.count) notes"
+                self.contentView.tableView.reloadData()
             }
             .store(in: &cancellables)
     }
@@ -151,7 +156,6 @@ extension StartVC: UITableViewDelegate, UITableViewDataSource {
             }
             let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
                 self.viewModel.deleteTodo(with: todo.id)
-                print("Delete tapped")
             }
             return UIMenu(title: "", children: [edit, share, delete])
         })
