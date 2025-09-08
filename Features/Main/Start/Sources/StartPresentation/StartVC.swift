@@ -162,7 +162,11 @@ extension StartVC: UITableViewDelegate, UITableViewDataSource {
                 print("Edit tapped")
             }
             let share = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up")) { _ in
-                print("Share tapped")
+                self.presentActivity()
+                let activityVC = UIActivityViewController(activityItems: [self], applicationActivities: nil)
+                self.present(activityVC, animated: true) {
+                    self.dismissActivity()
+                }
             }
             let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
                 self.viewModel.deleteTodo(with: Int(todo.id))
@@ -185,6 +189,17 @@ extension StartVC: UITableViewDelegate, UITableViewDataSource {
         return UITargetedPreview(view: cell.contentView, parameters: parameters)
     }
 }
+
+extension StartVC: @preconcurrency UIActivityItemSource {
+    public func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        return "Share..."
+    }
+    
+    public func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        viewModel.todoModel.first
+    }
+}
+
 
 extension StartVC: NoteTVCellDelegate {
     func didTap(_ cell: NoteTVCell) {

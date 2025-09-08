@@ -7,6 +7,6 @@ public enum KeychainKeys {
     }
     
     public enum User {
-        public static let profile = "ToDoList-Kitchen"
+        public static let profile = "ToDoList"
     }
 }

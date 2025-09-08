@@ -19,13 +19,6 @@ public final class AppContainer: SharedContainer {
         .singleton
     }
     
-    public var userSubject: Factory<PassthroughSubject<UserRepresentable, Never>> {
-        Factory(self) {
-            PassthroughSubject<UserRepresentable, Never>()
-        }
-        .singleton
-    }
-    
     public var isSplashShown: Factory<Bool> {
         Factory(self) {
             false
@@ -79,18 +72,6 @@ public final class AppContainer: SharedContainer {
         .singleton
     }
     
-    public var deviceName: Factory<String> {
-        Factory(self) {
-            DeviceInfo.userDefinedName
-        }.singleton
-    }
-    
-    public var deviceModel: Factory<String> {
-        Factory(self) {
-            DeviceInfo.modelName
-        }.singleton
-    }
-    
     public var logOutSubject: Factory<PassthroughSubject<Bool, Never>> {
         Factory(self) {
             PassthroughSubject<Bool, Never>()
@@ -126,8 +107,6 @@ public final class AppContainer: SharedContainer {
             client.headers.set("appType", self.appType())
             client.headers.set("appVersion", self.appVersion())
             client.headers.set("deviceUid", self.deviceUid())
-            client.headers.set("deviceName", self.deviceName())
-            client.headers.set("deviceModel", self.deviceModel())
             return client
         }
         .singleton
