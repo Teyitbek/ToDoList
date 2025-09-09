@@ -8,8 +8,7 @@ public class NoteTVCellCV: UIView {
     private lazy var stackView = makeStackView()
     lazy var titleLabel = makeTitleLabel()
     lazy var doneView = makeLineView(alpha: 0.3)
-    lazy var subtitleLabel = makeSubTitleLabel()
-    lazy var dateLabel = makeSubTitleLabel()
+    lazy var dateLabel = makeDateLabel()
     private lazy var bottomLineView = makeLineView(alpha: 0.6)
     
     var doneViewConstraints: AnchoredConstraints?
@@ -32,7 +31,6 @@ extension NoteTVCellCV: Customizable {
         addSubview(stackView)
         stackView.addArrangedSubviews(
             titleLabel,
-            subtitleLabel,
             dateLabel
         )
         addSubview(doneView)
@@ -90,15 +88,15 @@ private extension NoteTVCellCV {
     
     func makeTitleLabel() -> UILabel {
         let label = UILabel()
-        label.font = Fonts.murecho.font(forTextStyle: .title3)
+        label.font = UIFont.preferredFont(forTextStyle: .headline)
         label.textColor = .white
         label.numberOfLines = 0
         return label
     }
     
-    func makeSubTitleLabel() -> UILabel {
+    func makeDateLabel() -> UILabel {
         let label = UILabel()
-        label.font = Fonts.murecho.font(forTextStyle: .footnote)
+        label.font = UIFont.preferredFont(forTextStyle: .subheadline)
         label.textColor = .white.withAlphaComponent(0.6)
         label.numberOfLines = 2
         return label

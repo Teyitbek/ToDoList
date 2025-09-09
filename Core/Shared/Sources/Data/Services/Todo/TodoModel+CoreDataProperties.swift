@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 import Domain
 
-extension TodoModel: TodoRepresentable, @unchecked Sendable { // warning
+extension TodoModel: TodoRepresentable, @unchecked Sendable {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<TodoModel> {
         return NSFetchRequest<TodoModel>(entityName: "TodoModel")
     }
@@ -18,18 +18,20 @@ extension TodoModel: TodoRepresentable, @unchecked Sendable { // warning
     @NSManaged public var id: Int64
     @NSManaged public var userId: Int64
     @NSManaged public var todo: String?
+    @NSManaged public var subtitle: String?
     @NSManaged public var completed: Bool
 }
 
 extension TodoModel: Identifiable {
-    func update(model: TodoModel) {
+    public func update(model: TodoRepresentable) {
         self.id = model.id
         self.userId = model.userId
         self.todo = model.todo
         self.completed = model.completed
+        try? managedObjectContext?.save()
     }
     
-    func deleteModel() {
+    public func deleteModel() {
         managedObjectContext?.delete(self)
         try? managedObjectContext?.save()
     }

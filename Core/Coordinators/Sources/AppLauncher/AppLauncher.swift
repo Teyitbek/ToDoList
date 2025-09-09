@@ -21,7 +21,6 @@ final public class AppLauncher {
     }
     
     public func launch() {
-        navigationController.navigationBar.isHidden = true
         window.rootViewController = navigationController
         let router = AppRouter(rootController: navigationController)
         let appCoordinatorFactory = AppCoordinatorFactory()

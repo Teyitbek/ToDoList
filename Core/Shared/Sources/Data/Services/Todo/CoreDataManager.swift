@@ -12,7 +12,8 @@ public protocol CoreDataManagerProtocol {
 }
 
 public class CoreDataManager: CoreDataManagerProtocol {
-    public static let shared = CoreDataManager()
+    public init() {
+    }
     
     public var model = [TodoModel]()
     

@@ -70,7 +70,6 @@ public final class AppRouter: NSObject, Router {
             completions[controller] = completion
         }
         controller.hidesBottomBarWhenPushed = hideBottomBar
-        rootController?.navigationBar.isHidden = hideBar
         rootController?.pushViewController(controller, animated: animated)
     }
     
@@ -91,13 +90,11 @@ public final class AppRouter: NSObject, Router {
     public func setRootModule(_ module: Presentable?, hideBar: Bool, hideNavigationBar: Bool) {
         guard let controller = module?.toPresent() else { return }
         rootController?.setViewControllers([controller], animated: false)
-        rootController?.navigationBar.isHidden = hideNavigationBar
     }
     
     public func setRootModule(_ module: Presentable?, hideBar: Bool, animated: Bool = false) {
         guard let controller = module?.toPresent() else { return }
         rootController?.setViewControllers([controller], animated: animated)
-        rootController?.navigationBar.isHidden = hideBar
     }
     
     public func popToRootModule(animated: Bool) {

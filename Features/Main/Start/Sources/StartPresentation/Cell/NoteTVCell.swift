@@ -27,14 +27,12 @@ open class NoteTVCell: TableViewCell<NoteTVCellCV> {
     
     func setup(with model: TodoRepresentable) {
         mainContentView.selectButton.setImage(model.completed ? .circleSelected : .circleUnselected, for: .normal)
-        mainContentView.titleLabel.text = model.todo
-        mainContentView.subtitleLabel.text = "Valet data can only be accessed while the device is unlocked..."
-        mainContentView.dateLabel.text = "5 September 2025"
-
-        mainContentView.doneView.isHidden = !model.completed
-        mainContentView.titleLabel.alpha = model.completed ? 0.5 : 1
-        mainContentView.subtitleLabel.alpha = model.completed ? 0.5 : 1
+        mainContentView.dateLabel.text = Date().toString()
         mainContentView.dateLabel.alpha = model.completed ? 0.5 : 1
+        mainContentView.doneView.isHidden = !model.completed
+
+        mainContentView.titleLabel.attributedText = model.todo?.customAttributedText()
+        mainContentView.titleLabel.alpha = model.completed ? 0.5 : 1
 
         mainContentView.titleLabel.layoutIfNeeded()
         mainContentView.doneViewConstraints?.width?.constant = calculateTitleWidth()

@@ -115,7 +115,7 @@ public final class AppContainer: SharedContainer {
     // MARK: - Core Data
     public var coreDataManager: Factory<CoreDataManager> {
         Factory(self) {
-            CoreDataManager.shared
+            CoreDataManager()
         }
         .singleton
     }

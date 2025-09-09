@@ -29,7 +29,8 @@ public final class MainModuleFactory: MainFactory {
     public func makeDetailsmodule(todo: TodoRepresentable?) -> DetailsVC {
         let container = DetailsContainer()
         let contentView = DetailsCV()
-        let viewModel = DetailsVM(sessionService: container.sessionService(), todo: todo)
+        let viewModel = DetailsVM(coreDataManager: container.coreDataManager(),
+                                  sessionService: container.sessionService(), todo: todo)
         let viewController = DetailsVC(contentView: contentView, viewModel: viewModel)
         return viewController
     }

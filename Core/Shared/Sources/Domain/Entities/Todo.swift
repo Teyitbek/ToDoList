@@ -2,6 +2,7 @@ import Foundation
 
 public class Todo: TodoRepresentable {
     public var todo: String?
+    public var subtitle: String?
     public var id: Int64
     public var completed: Bool
     public var userId: Int64

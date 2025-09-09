@@ -1,4 +1,5 @@
 import Combine
+import DetailsPresentation
 import UIKit
 import Foundation
 import Data
@@ -49,11 +50,12 @@ public final class StartVM: ViewModel, StartViewModel {
     @MainActor
     public func getRemoteData() {
         activityIndicatorIsHiddenSubject.send(false)
-        
         getDataTask = Task {
             do {
                 let todo = try await useCases.getTodos.execute()
                 todosSubject.send(todo)
+                initialTodoModel = todo
+                todoModel = todo
                 coreDataManager.model.removeAll()
                 todo.forEach { coreDataManager.add($0) }
                 dump(coreDataManager.model)
@@ -68,13 +70,16 @@ public final class StartVM: ViewModel, StartViewModel {
     @MainActor
     public func deleteTodo(with id: Int) {
         activityIndicatorIsHiddenSubject.send(false)
-        
         getDataTask = Task {
             do {
                 let todo = try await useCases.deleteTodo.execute(with: id)
                 deleteSubject.send(todo)
                 activityIndicatorIsHiddenSubject.send(true)
-                coreDataManager.model.removeAll { todo.id == $0.id }
+                initialTodoModel.removeAll { $0.id == todo.id }
+                todoModel.removeAll { $0.id == todo.id }
+                if let index = coreDataManager.model.firstIndex(where: { $0.id == todo.id }) {
+                    coreDataManager.model[index].deleteModel()
+                }
             } catch {
                 errorSubject.send(error)
                 activityIndicatorIsHiddenSubject.send(true)
@@ -87,7 +92,8 @@ public final class StartVM: ViewModel, StartViewModel {
         coreDataManager.fetchAllModel()
         dump(coreDataManager.model)
         coreDataManager.model.forEach { todoModel.append($0) }
-        todosSubject.send(todoModel)
+        coreDataManager.model.forEach { initialTodoModel.append($0) }
+        todosSubject.send(coreDataManager.model)
         activityIndicatorIsHiddenSubject.send(true)
     }
 }

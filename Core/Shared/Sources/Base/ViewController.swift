@@ -45,7 +45,6 @@ open class ViewController<CV: ContentViewRepresentable, VM: ViewModel>: UIViewCo
     
     deinit {
         cancellables.removeAll()
-        contentView.removeKeyboardVisibilityController()
         print("===> \(type(of: self)) is deinited")
     }
     
@@ -55,7 +54,6 @@ open class ViewController<CV: ContentViewRepresentable, VM: ViewModel>: UIViewCo
         feedbackgGenerator.prepare()
         hapticMediumFeedbackGenerator.prepare()
         notificationFeedbackGenerator.prepare()
-        contentView.addInputVisibilityController()
     }
     
     open func bindVM() {

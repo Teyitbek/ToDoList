@@ -11,8 +11,6 @@ public final class StartVC: ViewController<StartCV, StartVM> {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        presentActivity()
-        viewModel.getLocalData()
         setupSearchController()
     }
     
@@ -32,11 +30,8 @@ public final class StartVC: ViewController<StartCV, StartVM> {
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         
-    }
-    
-    override public func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: true)
+        presentActivity()
+        viewModel.getLocalData()
     }
     
     public override func bindCV() {
@@ -63,23 +58,18 @@ public final class StartVC: ViewController<StartCV, StartVM> {
             .sink { [weak self] model in
                 guard let self = self else { return }
                 self.dismissActivity()
-                self.viewModel.initialTodoModel = model
-                self.viewModel.todoModel = model
-                self.contentView.bottomView.notestLabel.text = "\(viewModel.initialTodoModel.count) notes"
+                self.contentView.bottomView.notestLabel.text = "\(model.count) notes"
                 self.contentView.tableView.reloadData()
             }
             .store(in: &cancellables)
         
         viewModel.deleteSubject
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] todo in
+            .sink { [weak self] _ in
                 guard let self = self else { return }
                 self.dismissActivity()
-                guard todo.isDeleted else { return }
-                self.viewModel.initialTodoModel.removeAll { $0.id == todo.id }
-                self.viewModel.todoModel.removeAll { $0.id == todo.id }
-                self.viewModel.coreDataManager.model.removeAll { $0.id == todo.id }
-                self.contentView.bottomView.notestLabel.text = "\(viewModel.initialTodoModel.count) notes"
+                self.viewModel.coreDataManager.fetchAllModel()
+                self.contentView.bottomView.notestLabel.text = "\(viewModel.coreDataManager.model.count) notes"
                 self.contentView.tableView.reloadData()
             }
             .store(in: &cancellables)
@@ -159,7 +149,7 @@ extension StartVC: UITableViewDelegate, UITableViewDataSource {
             return PreviewVC(model: todo)
         }, actionProvider: { _ in
             let edit = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
-                print("Edit tapped")
+                self.viewModel.onDetailsAction?(todo)
             }
             let share = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up")) { _ in
                 self.presentActivity()
