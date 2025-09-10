@@ -1,5 +1,4 @@
 import Combine
-import DetailsPresentation
 import UIKit
 import Foundation
 import Data
@@ -16,7 +15,7 @@ public protocol StartViewModel {
     func getRemoteData()
     
     @MainActor
-    func deleteTodo(with id: Int)
+    func delete(todo: TodoRepresentable)
     
     func getLocalData()
 }
@@ -29,7 +28,7 @@ public final class StartVM: ViewModel, StartViewModel {
     
     public var getDataTask: Task<Void, Never>?
     public var todosSubject = CurrentValueSubject<[TodoRepresentable], Never>([])
-    public var deleteSubject = PassthroughSubject<DeleteTodoResponse, Never>()
+    public var deleteSubject = PassthroughSubject<Bool, Never>()
     
     public var coreDataManager: CoreDataManager
     public var sessionService: SessionManaging
@@ -52,12 +51,17 @@ public final class StartVM: ViewModel, StartViewModel {
         activityIndicatorIsHiddenSubject.send(false)
         getDataTask = Task {
             do {
-                let todo = try await useCases.getTodos.execute()
-                todosSubject.send(todo)
-                initialTodoModel = todo
-                todoModel = todo
-                coreDataManager.model.removeAll()
-                todo.forEach { coreDataManager.add($0) }
+                let remoteTodos = try await useCases.getTodos.execute()
+                let localTodos = coreDataManager.model.filter { $0.uuid != nil && $0.id == 0 }
+
+                let combined = localTodos + remoteTodos
+                todosSubject.send(combined)
+                initialTodoModel = combined
+                todoModel = combined
+
+                coreDataManager.deleteAllModels()
+                combined.forEach { coreDataManager.add($0) }
+
                 dump(coreDataManager.model)
                 activityIndicatorIsHiddenSubject.send(true)
             } catch {
@@ -68,18 +72,34 @@ public final class StartVM: ViewModel, StartViewModel {
     }
     
     @MainActor
-    public func deleteTodo(with id: Int) {
+    public func delete(todo: TodoRepresentable) {
+        // local deletion
         activityIndicatorIsHiddenSubject.send(false)
+        if let uuid = todo.uuid {
+            if let index = coreDataManager.model.firstIndex(where: { $0.uuid == uuid }) {
+                coreDataManager.model[index].deleteModel()
+                coreDataManager.fetchAllModel()
+                todoModel = coreDataManager.model
+                initialTodoModel = coreDataManager.model
+                deleteSubject.send(true)
+            }
+            activityIndicatorIsHiddenSubject.send(true)
+            return
+        }
+        // remote deletion
         getDataTask = Task {
             do {
-                let todo = try await useCases.deleteTodo.execute(with: id)
-                deleteSubject.send(todo)
+                let todo = try await useCases.deleteTodo.execute(with: Int(todo.id))
                 activityIndicatorIsHiddenSubject.send(true)
                 initialTodoModel.removeAll { $0.id == todo.id }
                 todoModel.removeAll { $0.id == todo.id }
                 if let index = coreDataManager.model.firstIndex(where: { $0.id == todo.id }) {
                     coreDataManager.model[index].deleteModel()
                 }
+                coreDataManager.fetchAllModel()
+                todoModel = coreDataManager.model
+                initialTodoModel = coreDataManager.model
+                deleteSubject.send(true)
             } catch {
                 errorSubject.send(error)
                 activityIndicatorIsHiddenSubject.send(true)
@@ -91,8 +111,10 @@ public final class StartVM: ViewModel, StartViewModel {
         activityIndicatorIsHiddenSubject.send(false)
         coreDataManager.fetchAllModel()
         dump(coreDataManager.model)
-        coreDataManager.model.forEach { todoModel.append($0) }
-        coreDataManager.model.forEach { initialTodoModel.append($0) }
+        todoModel.removeAll()
+        initialTodoModel.removeAll()
+        todoModel = coreDataManager.model
+        initialTodoModel = coreDataManager.model
         todosSubject.send(coreDataManager.model)
         activityIndicatorIsHiddenSubject.send(true)
     }

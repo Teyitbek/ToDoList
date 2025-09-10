@@ -18,7 +18,8 @@ extension TodoModel: TodoRepresentable, @unchecked Sendable {
     @NSManaged public var id: Int64
     @NSManaged public var userId: Int64
     @NSManaged public var todo: String?
-    @NSManaged public var subtitle: String?
+    @NSManaged public var createdAt: Date?
+    @NSManaged public var uuid: UUID?
     @NSManaged public var completed: Bool
 }
 

@@ -68,9 +68,10 @@ public final class StartVC: ViewController<StartCV, StartVM> {
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 self.dismissActivity()
-                self.viewModel.coreDataManager.fetchAllModel()
                 self.contentView.bottomView.notestLabel.text = "\(viewModel.coreDataManager.model.count) notes"
-                self.contentView.tableView.reloadData()
+                DispatchQueue.main.async {
+                    self.contentView.tableView.reloadData()
+                }
             }
             .store(in: &cancellables)
     }
@@ -80,8 +81,8 @@ public final class StartVC: ViewController<StartCV, StartVM> {
 private extension StartVC {
     func onResetAction() {
         let alert = UIAlertController(title: "Reset", message: "Are you sure you want to reset all changes?", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Yes", style: .cancel, handler: { [weak self] _ in
             self?.viewModel.getRemoteData()
         }))
         present(alert, animated: true)
@@ -159,7 +160,7 @@ extension StartVC: UITableViewDelegate, UITableViewDataSource {
                 }
             }
             let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                self.viewModel.deleteTodo(with: Int(todo.id))
+                self.viewModel.delete(todo: todo)
             }
             return UIMenu(title: "", children: [edit, share, delete])
         })

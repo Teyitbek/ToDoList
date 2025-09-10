@@ -41,6 +41,9 @@ public class CoreDataManager: CoreDataManagerProtocol {
     
     public func fetchAllModel() {
         let request = TodoModel.fetchRequest()
+        let sort = NSSortDescriptor(key: "createdAt", ascending: false) 
+        request.sortDescriptors = [sort]
+
         if let model = try? persistentContainer.viewContext.fetch(request) {
             self.model = model
         }
@@ -52,7 +55,20 @@ public class CoreDataManager: CoreDataManagerProtocol {
         model.userId = Int64(newModel.userId)
         model.completed = newModel.completed
         model.todo = newModel.todo
+        model.createdAt = Date()
+        model.uuid = UUID()
         saveContext()
         fetchAllModel()
+    }
+    
+    public func deleteAllModels() {
+        let request = TodoModel.fetchRequest()
+        if let result = try? persistentContainer.viewContext.fetch(request) {
+            for object in result {
+                persistentContainer.viewContext.delete(object)
+            }
+            try? persistentContainer.viewContext.save()
+            model.removeAll()
+        }
     }
 }
