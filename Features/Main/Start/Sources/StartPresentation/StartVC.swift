@@ -115,14 +115,13 @@ extension StartVC: UISearchControllerDelegate, UISearchBarDelegate {
     }
     
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        viewModel.todoModel = []
-        for item in viewModel.initialTodoModel {
-            if ((item.todo?.lowercased().contains(searchText.lowercased())) != nil) {
-                viewModel.todoModel.append(item)
-            }
-        }
-        if searchText.isEmpty {
+        let normalizedSearch = searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        if normalizedSearch.isEmpty {
             viewModel.todoModel = viewModel.initialTodoModel
+        } else {
+            viewModel.todoModel = viewModel.initialTodoModel.filter {
+                $0.todo?.lowercased().contains(normalizedSearch) == true
+            }
         }
         contentView.tableView.reloadData()
     }
@@ -154,7 +153,8 @@ extension StartVC: UITableViewDelegate, UITableViewDataSource {
             }
             let share = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up")) { _ in
                 self.presentActivity()
-                let activityVC = UIActivityViewController(activityItems: [self], applicationActivities: nil)
+                let message = "Note: \n\(todo.todo ?? "")"
+                let activityVC = UIActivityViewController(activityItems: [message], applicationActivities: nil)
                 self.present(activityVC, animated: true) {
                     self.dismissActivity()
                 }
@@ -180,17 +180,6 @@ extension StartVC: UITableViewDelegate, UITableViewDataSource {
         return UITargetedPreview(view: cell.contentView, parameters: parameters)
     }
 }
-
-extension StartVC: @preconcurrency UIActivityItemSource {
-    public func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
-        return "Share..."
-    }
-    
-    public func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
-        viewModel.todoModel.first
-    }
-}
-
 
 extension StartVC: NoteTVCellDelegate {
     func didTap(_ cell: NoteTVCell) {
