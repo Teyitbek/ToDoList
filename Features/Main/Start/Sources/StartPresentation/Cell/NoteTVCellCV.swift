@@ -7,7 +7,6 @@ public class NoteTVCellCV: UIView {
     lazy var selectButton = makeButton()
     private lazy var stackView = makeStackView()
     lazy var titleLabel = makeTitleLabel()
-    lazy var doneView = makeLineView(alpha: 0.3)
     lazy var dateLabel = makeDateLabel()
     private lazy var bottomLineView = makeLineView(alpha: 0.6)
     
@@ -33,7 +32,6 @@ extension NoteTVCellCV: Customizable {
             titleLabel,
             dateLabel
         )
-        addSubview(doneView)
         addSubview(bottomLineView)
     }
     
@@ -51,14 +49,6 @@ extension NoteTVCellCV: Customizable {
             .trailing(trailingAnchor, constant: Constants.UI.padding20),
             .bottom(bottomAnchor, constant: Constants.UI.padding8)
         )
-        
-        doneViewConstraints = doneView.anchor(
-            .centerY(titleLabel.centerYAnchor),
-            .leading(titleLabel.leadingAnchor, constant: -Constants.UI.padding4),
-            .height(1)
-        )
-        doneViewConstraints?.width = doneView.widthAnchor.constraint(equalToConstant: 0)
-        doneViewConstraints?.width?.isActive = true
         
         bottomLineView.anchor(
             .leading(leadingAnchor, constant: Constants.UI.padding20),

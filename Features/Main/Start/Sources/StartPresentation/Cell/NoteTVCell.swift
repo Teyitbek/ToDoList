@@ -22,16 +22,14 @@ open class NoteTVCell: TableViewCell<NoteTVCellCV> {
     override public func prepareForReuse() {
         super.prepareForReuse()
         mainContentView.selectButton.setImage(nil, for: .normal)
-        mainContentView.doneView.isHidden = true
     }
     
     func setup(with model: TodoRepresentable) {
         mainContentView.selectButton.setImage(model.completed ? .circleSelected : .circleUnselected, for: .normal)
         mainContentView.dateLabel.text = Date().toString()
         mainContentView.dateLabel.alpha = model.completed ? 0.5 : 1
-        mainContentView.doneView.isHidden = !model.completed
 
-        mainContentView.titleLabel.attributedText = model.todo?.customAttributedText()
+        mainContentView.titleLabel.attributedText = model.todo?.customAttributedText(withstrikethrough: model.completed)
         mainContentView.titleLabel.alpha = model.completed ? 0.5 : 1
 
         mainContentView.titleLabel.layoutIfNeeded()
