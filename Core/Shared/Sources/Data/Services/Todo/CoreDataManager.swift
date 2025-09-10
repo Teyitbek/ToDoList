@@ -15,7 +15,7 @@ public class CoreDataManager: CoreDataManagerProtocol {
     public init() {
     }
     
-    public var model = [TodoModel]()
+    public var todoData = [TodoModel]()
     
     private let persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "TodoModel")
@@ -45,7 +45,7 @@ public class CoreDataManager: CoreDataManagerProtocol {
         request.sortDescriptors = [sort]
 
         if let model = try? persistentContainer.viewContext.fetch(request) {
-            self.model = model
+            self.todoData = model
         }
     }
     
@@ -68,7 +68,7 @@ public class CoreDataManager: CoreDataManagerProtocol {
                 persistentContainer.viewContext.delete(object)
             }
             try? persistentContainer.viewContext.save()
-            model.removeAll()
+            todoData.removeAll()
         }
     }
 }

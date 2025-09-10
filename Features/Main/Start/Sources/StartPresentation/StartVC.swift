@@ -63,12 +63,19 @@ public final class StartVC: ViewController<StartCV, StartVM> {
             }
             .store(in: &cancellables)
         
+        viewModel.todosEmptySubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.viewModel.getRemoteData()
+            }
+            .store(in: &cancellables)
+        
         viewModel.deleteSubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 self.dismissActivity()
-                self.contentView.bottomView.notestLabel.text = "\(viewModel.coreDataManager.model.count) notes"
+                self.contentView.bottomView.notestLabel.text = "\(viewModel.coreDataManager.todoData.count) notes"
                 DispatchQueue.main.async {
                     self.contentView.tableView.reloadData()
                 }
@@ -110,16 +117,16 @@ extension StartVC: UISearchControllerDelegate, UISearchBarDelegate {
     
     public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         viewModel.isSearchingMode = false
-        viewModel.todoModel = viewModel.initialTodoModel
+        viewModel.todos = viewModel.initialTodos
         contentView.tableView.reloadData()
     }
     
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         let normalizedSearch = searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         if normalizedSearch.isEmpty {
-            viewModel.todoModel = viewModel.initialTodoModel
+            viewModel.todos = viewModel.initialTodos
         } else {
-            viewModel.todoModel = viewModel.initialTodoModel.filter {
+            viewModel.todos = viewModel.initialTodos.filter {
                 $0.todo?.lowercased().contains(normalizedSearch) == true
             }
         }
@@ -129,22 +136,22 @@ extension StartVC: UISearchControllerDelegate, UISearchBarDelegate {
 
 extension StartVC: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.todoModel.count
+        viewModel.todos.count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: NoteTVCell = tableView.dequeueReusableCell(for: indexPath)
-        cell.setup(with: viewModel.todoModel[indexPath.row])
+        cell.setup(with: viewModel.todos[indexPath.row])
         cell.delegate = self
         return cell
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.onDetailsAction?(self, viewModel.todoModel[indexPath.row])
+        viewModel.onDetailsAction?(self, viewModel.todos[indexPath.row])
     }
     
     public func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let todo = viewModel.todoModel[indexPath.row]
+        let todo = viewModel.todos[indexPath.row]
         return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: {
             return PreviewVC(model: todo)
         }, actionProvider: { _ in
@@ -184,7 +191,7 @@ extension StartVC: UITableViewDelegate, UITableViewDataSource {
 extension StartVC: NoteTVCellDelegate {
     func didTap(_ cell: NoteTVCell) {
         guard let indexPath = contentView.tableView.indexPath(for: cell) else { return }
-        viewModel.todoModel[indexPath.row].completed.toggle()
+        viewModel.todos[indexPath.row].completed.toggle()
         contentView.tableView.reloadData()
     }
 }
