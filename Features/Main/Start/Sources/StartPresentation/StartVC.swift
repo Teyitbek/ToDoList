@@ -201,7 +201,7 @@ private class PreviewVC: UIViewController {
         let contentView = PreviewCV()
         contentView.titleLabel.text = model.todo
         contentView.subtitleLabel.text = model.completed ? "Completed" : "Not Completed"
-        contentView.dateLabel.text = model.completed ? "2021-07-28" : "2021-07-27"
+        contentView.dateLabel.text = model.createdAt?.toString()
         view = contentView
     }
     
