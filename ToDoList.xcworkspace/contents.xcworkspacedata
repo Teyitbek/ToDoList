@@ -18,9 +18,6 @@
       location = "group:Components"
       name = "Components">
       <FileRef
-         location = "group:TextField">
-      </FileRef>
-      <FileRef
          location = "group:ActivityIndicator">
       </FileRef>
    </Group>

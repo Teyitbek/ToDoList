@@ -3,7 +3,6 @@ import UIKit
 open class TableView: UITableView {
     public init(
         style: UITableView.Style = .plain,
-        refreshControl: RefreshControl? = nil,
         backgroundColor: UIColor = .clear,
         allowsSelection: Bool = true,
         allowsMultipleSelectionDuringEditing: Bool = false,
@@ -26,7 +25,6 @@ open class TableView: UITableView {
         if let dataSource = dataSource {
             self.dataSource = dataSource
         }
-        self.refreshControl = refreshControl
         self.backgroundColor = backgroundColor
         self.allowsSelection = allowsSelection
         self.allowsMultipleSelectionDuringEditing = allowsMultipleSelectionDuringEditing

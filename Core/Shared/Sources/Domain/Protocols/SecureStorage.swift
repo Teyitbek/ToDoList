@@ -4,12 +4,4 @@ public protocol SecureStorage {
     func delete(key: String) throws
 }
 
-public enum KeychainError: Error {
-    case invalidIdentifier
-    case initializationFailure(String)
-    case saveFailure(String)
-    case retrievalFailure(String)
-    case deletionFailure(String)
-}
-
 

@@ -8,7 +8,7 @@ import UIKit
 
 public protocol MainFactory {
     func makeStartModule() -> StartVC
-    func makeDetailsmodule(todo: TodoRepresentable?) -> DetailsVC
+    func makeDetailsmodule(delegate: ActionProtocol, todo: TodoRepresentable?) -> DetailsVC
 }
 
 public final class MainModuleFactory: MainFactory {
@@ -26,11 +26,13 @@ public final class MainModuleFactory: MainFactory {
         return viewController
     }
     
-    public func makeDetailsmodule(todo: TodoRepresentable?) -> DetailsVC {
+    public func makeDetailsmodule(delegate: ActionProtocol, todo: TodoRepresentable?) -> DetailsVC {
         let container = DetailsContainer()
         let contentView = DetailsCV()
-        let viewModel = DetailsVM(coreDataManager: container.coreDataManager(),
-                                  sessionService: container.sessionService(), todo: todo)
+        let viewModel = DetailsVM(delegate: delegate,
+                                  coreDataManager: container.coreDataManager(),
+                                  sessionService: container.sessionService(),
+                                  todo: todo)
         let viewController = DetailsVC(contentView: contentView, viewModel: viewModel)
         return viewController
     }

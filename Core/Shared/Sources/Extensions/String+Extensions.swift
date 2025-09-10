@@ -2,15 +2,6 @@ import Foundation
 import UIKit
 
 public extension String {
-    func toDate(withFormat format: String = "yyyy-MM-dd HH:mm:ss") -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = format
-        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-        dateFormatter.locale = Locale(identifier: "en_US")
-        let date = dateFormatter.date(from: self)
-        return date
-    }
-    
     func customAttributedText() -> NSAttributedString {
         let lines = self.components(separatedBy: "\n")
         let attributed = NSMutableAttributedString(string: self)

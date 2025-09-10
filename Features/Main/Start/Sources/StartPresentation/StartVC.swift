@@ -88,7 +88,7 @@ private extension StartVC {
         present(alert, animated: true)
     }
     func onAddNewNoteAction() {
-        viewModel.onDetailsAction?(nil)
+        viewModel.onDetailsAction?(self, nil)
     }
 }
 extension StartVC: UISearchControllerDelegate, UISearchBarDelegate {
@@ -140,7 +140,7 @@ extension StartVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.onDetailsAction?(viewModel.todoModel[indexPath.row])
+        viewModel.onDetailsAction?(self, viewModel.todoModel[indexPath.row])
     }
     
     public func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -149,7 +149,7 @@ extension StartVC: UITableViewDelegate, UITableViewDataSource {
             return PreviewVC(model: todo)
         }, actionProvider: { _ in
             let edit = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
-                self.viewModel.onDetailsAction?(todo)
+                self.viewModel.onDetailsAction?(self, todo)
             }
             let share = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up")) { _ in
                 self.presentActivity()
@@ -207,5 +207,11 @@ private class PreviewVC: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension StartVC: ActionProtocol {
+    public func didSendDelete(todo: TodoRepresentable) {
+        viewModel.delete(todo: todo)
     }
 }

@@ -9,7 +9,7 @@ import Base
 
 public protocol StartViewModel {
     var onStartAction: CompletionClosure? { get set }
-    var onDetailsAction: ((TodoRepresentable?) -> Void)? { get set }
+    var onDetailsAction: ((_ delegate: ActionProtocol, _ todo: TodoRepresentable?) -> Void)? { get set }
     
     @MainActor
     func getRemoteData()
@@ -24,7 +24,7 @@ public typealias UseCases = (getTodos: TodosUseCase, deleteTodo: DeleteTodoUseCa
 
 public final class StartVM: ViewModel, StartViewModel {
     public var onStartAction: CompletionClosure?
-    public var onDetailsAction: ((TodoRepresentable?) -> Void)?
+    public var onDetailsAction: ((_ delegate: ActionProtocol, _ todo: TodoRepresentable?) -> Void)?
     
     public var getDataTask: Task<Void, Never>?
     public var todosSubject = CurrentValueSubject<[TodoRepresentable], Never>([])

@@ -13,7 +13,6 @@ let package = Package(
             targets: ["StartPresentation", "StartDI"])
     ],
     dependencies: [.package(name: "Shared", path: "Shared"),
-                   .package(name: "TextField", path: "TextField"),
                    .package(name: "ActivityIndicator", path: "ActivityIndicator")],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -22,7 +21,6 @@ let package = Package(
                 dependencies: [
                     "StartDomain",
                     "StartData",
-                    "TextField",
                     "ActivityIndicator",
                     .product(name: "TableView", package: "Shared"),
                     .product(name: "Domain", package: "Shared"),
