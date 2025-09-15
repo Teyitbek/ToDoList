@@ -1,4 +1,5 @@
 import XCTest
+import Combine
 @testable import Start
 
 final class StartTests: XCTestCase {
@@ -61,7 +62,7 @@ final class StartTests: XCTestCase {
         viewModel.deleteSubject
             .sink { success in
                 XCTAssertTrue(success)
-                XCTAssertEqual(self.viewModel.todoModel.count, 0)
+                XCTAssertEqual(self.viewModel.todos.count, 0)
                 expectation.fulfill()
             }
             .store(in: &cancellables)
@@ -79,7 +80,7 @@ final class StartTests: XCTestCase {
         viewModel.deleteSubject
             .sink { success in
                 XCTAssertTrue(success)
-                XCTAssertEqual(self.viewModel.todoModel.count, 0)
+                XCTAssertEqual(self.viewModel.todos.count, 0)
                 expectation.fulfill()
             }
             .store(in: &cancellables)
@@ -137,16 +138,16 @@ final class StartTests: XCTestCase {
         let mockVM = StartVM(coreDataManager: TestCoreDataManager(), sessionService: MockSessionService(), useCases: (MockGetTodosUseCase(), MockDeleteTodoUseCase()))
         vc.viewModel = mockVM
         
-        mockVM.todoModel = [
+        mockVM.todos = [
             Todo(todo: "Buy milk", id: 1, completed: false, userId: 1),
             Todo(todo: "Call mom", id: 2, completed: false, userId: 1)
         ]
-        mockVM.initialTodoModel = mockVM.todoModel
+        mockVM.initialTodos = mockVM.todos
         
         vc.searchBar(UISearchBar(), textDidChange: "milk")
         
-        XCTAssertEqual(mockVM.todoModel.count, 1)
-        XCTAssertEqual(mockVM.todoModel.first?.todo, "Buy milk")
+        XCTAssertEqual(mockVM.todos.count, 1)
+        XCTAssertEqual(mockVM.todos.first?.todo, "Buy milk")
     }
 }
 
